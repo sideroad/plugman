@@ -17,6 +17,7 @@ const CANCEL = 'plug/CANCEL';
 
 const initialState = {
   items: [],
+  loaded: false,
   err: undefined
 };
 export default function reducer(state = initialState, action = {}) {
@@ -30,6 +31,7 @@ export default function reducer(state = initialState, action = {}) {
       return {
         ...state,
         loading: false,
+        loaded: true,
         items: action.res.body.items,
       };
     case GETS_FAIL:
@@ -57,6 +59,7 @@ export default function reducer(state = initialState, action = {}) {
       return {
         ...state,
         loading: false,
+        loaded: false,
         editing: false,
         err: undefined,
       };
@@ -74,6 +77,7 @@ export default function reducer(state = initialState, action = {}) {
       return {
         ...state,
         loading: false,
+        loaded: false,
         editing: false,
         err: undefined,
       };
@@ -91,6 +95,7 @@ export default function reducer(state = initialState, action = {}) {
       return {
         ...state,
         loading: false,
+        loaded: false,
         editing: false,
         err: undefined,
       };

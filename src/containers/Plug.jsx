@@ -82,6 +82,7 @@ const connected = connect(
             };
             websocket.onclose = () => {
               dispatch(wsActions.disconnect(websocket));
+              dispatch(pageActions.finishLoad());
             };
           });
     },
@@ -94,23 +95,20 @@ const connected = connect(
           fetcher.plug.delete({
             plug: plug.id
           })
-      .then(
+      ).then(
         () => {
           dispatch(pageActions.finishLoad());
           dispatch(push(stringify(uris.pages.plugs, { lang })));
         }
-      ));
+      );
     }
   })
 )(Plug);
 
 
 const asynced = asyncConnect([{
-  promise: ({ helpers: { fetcher }, params, store }) =>
+  promise: ({ store }) =>
     Promise.all([
-      fetcher.message.gets({
-        plug: params.plug
-      }),
       store.dispatch(wsActions.reset()),
     ])
 }])(connected);

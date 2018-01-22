@@ -78,6 +78,7 @@ const connected = connect(
     user: state.user.item,
     selected: props.params.plug,
     lang: props.params.lang,
+    open: state.page.open,
   }),
   dispatch => ({
     cancel: () => dispatch(cancel()),
@@ -109,9 +110,12 @@ const connected = connect(
 
 
 const asynced = asyncConnect([{
-  promise: ({ helpers: { fetcher } }) =>
+  promise: ({ helpers: { fetcher }, store }) =>
     Promise.all([
-      fetcher.plug.gets(),
+      !store.getState().plug.loaded ?
+        fetcher.plug.gets()
+      :
+        Promise.resolve(),
     ])
 }])(connected);
 

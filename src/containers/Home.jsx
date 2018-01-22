@@ -2,18 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { asyncConnect } from 'redux-connect';
-import Card from '../components/Card';
-
+import styles from '../css/home.less';
 
 const Home = () =>
-  <div>
-    <Card
-      lead={{
-        start: 'Click + to create Plug on sidebar',
-        create: ''
-      }}
-      items={[]}
-    />
+  <div className={styles.getstart} >
+    Click + to create Plug on sidebar
   </div>;
 
 Home.propTypes = {
