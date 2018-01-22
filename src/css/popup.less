@@ -1,0 +1,52 @@
+@import "variables.less";
+
+.popup {
+  border-radius: 3px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70%;
+  opacity: 1;
+  z-index: 9999;
+}
+
+.message {
+  margin: 0.5em;
+}
+
+.success {
+  border: 1px solid @light-primary;
+  background-color: @dark-primary;
+  color: @primary;
+  animation: popup 1.5s ease;
+  animation-fill-mode: forwards;
+}
+
+.error {
+  border: 1px solid @light-secondary;
+  background-color: @dark-secondary;
+  color: @primary;
+  animation: popup 5s ease;
+  animation-fill-mode: forwards;
+}
+
+.none {
+  display: none;
+}
+
+@keyframes popup{
+  0% {
+    opacity: 1;
+	}
+  75% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}

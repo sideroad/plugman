@@ -1,0 +1,48 @@
+{
+  "name": "plugman",
+  "description": "plugman",
+  "repository": "https://github.com/sideroad/plugman",
+  "keywords": [
+    "react",
+    "isomorphic",
+    "universal",
+    "webpack",
+    "express",
+    "hot reloading",
+    "react-hot-reloader",
+    "redux",
+    "starter",
+    "boilerplate",
+    "babel"
+  ],
+  "env": {
+    "NODE_ENV": {
+      "value": "production"
+    },
+    "NODE_PATH": {
+      "value": "./src"
+    },
+    "NPM_CONFIG_PRODUCTION": {
+      "value": "false"
+    },
+    "GLOBAL_HOST": {
+      "description": "Please specify domain"
+    },
+    "GLOBAL_PORT": {
+      "value": "443",
+      "description": "Please specify port"
+    },
+    "KOIKI_PLUGMAN_GITHUB_CLIENT_ID": {
+      "description": "Please specify github client ID. Github OAuth will be disabled if does not specified"
+    },
+    "PLUGMAN_GITHUB_CLIENT_SECRET": {
+      "description": "Please specify github client secret ID. This values required when KOIKI_PLUGMAN_GITHUB_CLIENT_ID has specified"
+    },
+    "PLUGMAN_MONGO_URL": {
+      "description": "Please specify MongoDB URL"
+    }
+  },
+  "addons": [
+    "mongolab:sandbox"
+  ]
+}

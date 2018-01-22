@@ -1,0 +1,29 @@
+@import "../../../node_modules/koiki-ui/less/input.less";
+@import "variables.less";
+@import "animations.less";
+
+.input{
+	color: @primary;
+	border-color: @primary;
+	height: 2.8em;
+	border-radius: 1.4em;
+}
+
+.prefix{
+	color: @secondary;
+}
+
+
+.input::-webkit-input-placeholder,
+.input:-ms-input-placeholder,
+.input::-moz-placeholder {
+  color: @secondary;
+}
+
+.input:focus{
+	border-color: @light-primary;
+}
+
+.input:focus + .prefix{
+	color: @primary;
+}

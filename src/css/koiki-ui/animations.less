@@ -1,0 +1,70 @@
+@import "../../../node_modules/koiki-ui/less/animations.less";
+@import "variables.less";
+
+@keyframes success-container{
+  0% {
+  }
+  25% {
+  }
+  26% {
+    color: @third;
+    background-color: @light-primary;
+  }
+  90% {
+  }
+  100% {
+    background-color: @third;
+  	color: @light-primary;
+  }
+}
+
+@keyframes success {
+  0% {
+    content: '\f110';
+  }
+  25% {
+    content: '\f110';
+  }
+  26% {
+    content: '\f058';
+    color: @light-primary;
+  }
+  100% {
+    content: '\f058';
+    color: @light-primary;
+  }
+}
+
+@keyframes error-container{
+  0% {
+  }
+  25% {
+  }
+  26% {
+    color: @third;
+    background-color: @light-secondary;
+  }
+  90% {
+  }
+  100% {
+    background-color: @third;
+  	color: @light-primary;
+  }
+}
+
+@keyframes error {
+  0% {
+    content: '\f110';
+  }
+  25% {
+    content: '\f110';
+  }
+  26% {
+    content: '\f071';
+    color: @light-secondary;
+  }
+  100% {
+    content: '\f071';
+    color: @light-secondary;
+  }
+}

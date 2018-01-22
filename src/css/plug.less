@@ -1,0 +1,159 @@
+@import "variables.less";
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2em;
+}
+
+.title {
+  font-size: 2em;
+}
+
+.header .delete {
+  width: 80px;
+  width: 50px;
+  font-size: 0.8em;
+  padding: 0;
+  height: 50px;
+}
+
+.header .delete button {
+  padding: 0;
+  height: 50px;
+  border-radius: 50%;
+}
+.header .delete button i {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.url {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1em;
+}
+
+.url input {
+  padding-left: 0.5em;
+}
+
+.controls {
+  margin: 50px;
+  display: flex;
+  justify-content: center;
+}
+
+.controls .connect{
+  font-size: 1.75em;
+  width: 150px;
+  height: 150px;
+  padding: 0;
+}
+
+.controls .connect button i{
+  margin: 0;
+}
+
+.controls .connect button {
+  background-color: @light-primary;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+}
+
+.controls .save {
+  width: 150px;
+}
+
+.sockets {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.line {
+  position: relative;
+  width: 770px;
+  height: 280px;
+  margin-bottom: 1em;
+}
+
+.socket {
+  position: absolute;
+  top: 0;
+  left: 35px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  width: 700px;
+  overflow: hidden;
+  border: 2px solid @primary;
+  border-radius: 25px;
+  z-index: 1;
+}
+
+.plugLeft,
+.plugRight {
+  width: 67.5px;
+  height: 50px;
+  background-size: cover;
+  outline: none;
+  border: none;
+  background-color: inherit;
+  cursor: pointer;
+  position: absolute;
+  top: 110px;
+}
+
+.plugLeft {
+  background-image: url(../images/plug-left.png);
+  animation: plugin-left 1s cubic-bezier(0.645, 0.045, 0.355, 1);
+  animation-fill-mode:forwards;
+  left: -45px;
+}
+.plugRight {
+  background-image: url(../images/plug-right.png);
+  animation: plugin-right 1s cubic-bezier(0.645, 0.045, 0.355, 1);
+  animation-fill-mode:forwards;
+  right: -45px;
+}
+.plugLeft:hover {
+  animation: plughalf-left 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
+  animation-fill-mode:forwards;
+  left: -17.5px;
+}
+.plugRight:hover {
+  animation: plughalf-right 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
+  animation-fill-mode:forwards;
+  right: -17.5px;
+}
+
+@keyframes plugin-left{
+  100% {
+    left: -17.5px;
+  }
+}
+
+@keyframes plugin-right{
+  100% {
+    right: -17.5px;
+  }
+}
+
+@keyframes plughalf-left{
+  100% {
+    left: -27.5px;
+  }
+}
+
+@keyframes plughalf-right{
+  100% {
+    right: -27.5px;
+  }
+}

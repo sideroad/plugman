@@ -1,0 +1,25 @@
+@import "../../../node_modules/koiki-ui/less/calendar.less";
+@import "variables.less";
+
+.calendar {
+  background-color: @third;
+  box-shadow: @shadow;
+}
+
+.link:hover{
+  color: @third;
+}
+
+.selected .linkcircle{
+  background-color: @light-primary;
+  box-shadow: @shadow;
+}
+
+.selected .link:hover .linkcircle{
+  background-color: @light-primary;
+  box-shadow: @shadow;
+}
+
+.selected .link{
+  color: @third;
+}

@@ -1,0 +1,147 @@
+@import "variables.less";
+
+.modal {
+  display: none;
+  background-color: @primary-with-opacity;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+}
+.open{
+  display: block;
+}
+
+.loading{
+  opacity: 0;
+  transition-property: opacity;
+  transition-duration:0.15s;
+  transition-timing-function:ease-in-out;
+}
+
+.loaded{
+  opacity: 1;
+  transition-property: opacity;
+  transition-duration:0.15s;
+  transition-timing-function:ease-in-out;
+}
+
+.plug {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  top: 50%;
+  left: 50%;
+  animation: plugin 5s cubic-bezier(0.645, 0.045, 0.355, 1);
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+}
+
+@keyframes plugin {
+  0% {
+    top: 50%;
+    left: 50%;
+    transform: translate(-25px, -50px);
+  }
+  10% {
+    top: 50%;
+    left: 50%;
+    transform: translate(-25px, -100px);
+  }
+  90% {
+    top: 50%;
+    left: 50%;
+    transform: translate(-25px, -100px);
+  }
+  100% {
+    top: 50%;
+    left: 50%;
+    transform: translate(-25px, -50px);
+  }
+}
+
+.plugball {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-25px, -25px);
+  background-color: @light-third;
+  color: @third;
+  animation: loading 5s cubic-bezier(0.645, 0.045, 0.355, 1);
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+}
+
+@keyframes loading {
+  0% {
+    top: 50%;
+    left: 50%;
+    transform: translate(-25px, -25px);
+  }
+  10% {
+    top: 100%;
+    left: 50%;
+    transform: translate(-25px, -50px);
+  }
+  20% {
+    top: 100%;
+    left: 0%;
+    transform: translate(0px, -50px);
+  }
+  40% {
+    top: 0%;
+    left: 0%;
+    transform: translate(0px, 0px);
+  }
+  60% {
+    top: 0%;
+    left: 100%;
+    transform: translate(-50px, 0px);
+  }
+  80% {
+    top: 100%;
+    left: 100%;
+    transform: translate(-50px, -50px);
+  }
+  90% {
+    top: 100%;
+    left: 50%;
+    transform: translate(-25px, -50px);
+  }
+  100% {
+    top: 50%;
+    left: 50%;
+    transform: translate(-25px, -25px);
+  }
+}
+
+.electric {
+  animation: roll 2s cubic-bezier(0.645, 0.045, 0.355, 1);
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  width: 50px;
+  height: 50px;
+}
+
+@keyframes roll {
+  0% {
+    transform: scale(0.5) rotate(0);
+  }
+  25% {
+    transform: scale(1) rotate(180deg);
+  }
+  50% {
+    transform: scale(0.5) rotate(360deg);
+  }
+  75% {
+    transform: scale(1) rotate(180deg);
+  }
+  100% {
+    transform: scale(0.5) rotate(0);
+  }
+}
