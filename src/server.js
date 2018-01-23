@@ -22,8 +22,6 @@ app.use(compression());
 app.use(favicon(path.join(__dirname, '..', 'static', 'images', 'favicon.png')));
 app.use(express.static(path.join(__dirname, '..', 'static')));
 
-bff(app);
-
 let clients = [];
 app.ws('/ws', (ws) => {
   // eslint-disable-next-line no-param-reassign
@@ -41,6 +39,8 @@ app.ws('/ws', (ws) => {
 });
 
 passporter.use({ github: config.github }, app, config.global.base);
+
+bff(app);
 
 server({
   urls,
