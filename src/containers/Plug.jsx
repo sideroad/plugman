@@ -88,19 +88,14 @@ const connected = connect(
     },
     delete: (fetcher, plug, lang) => {
       dispatch(pageActions.load());
-      fetcher.message.deletes({
-        plug: plug.id,
-      }).then(
-        () =>
-          fetcher.plug.delete({
-            plug: plug.id
-          })
-      ).then(
-        () => {
-          dispatch(pageActions.finishLoad());
-          dispatch(push(stringify(uris.pages.plugs, { lang })));
-        }
-      );
+      fetcher.plug.delete({
+        plug: plug.id
+      }).then(() => {
+        dispatch(pageActions.finishLoad());
+        dispatch(push(stringify(uris.pages.plugs, { lang })));
+      }, () => {
+        dispatch(pageActions.finishLoad());
+      });
     }
   })
 )(Plug);

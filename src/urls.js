@@ -4,21 +4,10 @@ import uris from './uris';
 const base = config.global.base;
 
 export default {
-  user: {
-    save: {
-      url: `${base}/bff${uris.apis.users}`,
-      method: 'POST',
-      credentials: 'include',
-    },
-  },
   plug: {
     gets: {
       url: `${base}/bff${uris.apis.plugs}`,
       method: 'GET',
-      defaults: {
-        limit: 10000,
-        orderBy: 'name'
-      },
       credentials: 'include'
     },
     add: {
