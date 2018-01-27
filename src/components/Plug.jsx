@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Input, Button } from 'koiki-ui';
-import Send from '../components/Send';
-import OnMessage from '../components/OnMessage';
+import Socket from '../components/Socket';
 
 const styles = {
   plug: require('../css/plug.less'),
@@ -45,20 +44,11 @@ const Plug = props =>
         <ul className={styles.plug.sockets} >
           {
             props.sockets.map(socket =>
-              <li className={styles.plug.line} key={socket.id}>
-                <button
-                  className={styles.plug.plugLeft}
-                  onClick={() => props.onDisconnect(socket)}
-                />
-                <div className={styles.plug.socket} >
-                  <Send socket={socket} />
-                  <OnMessage socket={socket} />
-                </div>
-                <button
-                  className={styles.plug.plugRight}
-                  onClick={() => props.onDisconnect(socket)}
-                />
-              </li>
+              <Socket
+                socket={socket}
+                onConnect={props.onConnect}
+                onDisconnect={props.onDisconnect}
+              />
             )
           }
         </ul>
