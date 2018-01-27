@@ -40,9 +40,11 @@ class Send extends Component {
     }
   }
   onPrevNextHistory(operation) {
+    const newIndex = operation === 'prev' ? this.state.index - 1 :
+           this.state.index + 1;
     this.setState({
-      index: operation === 'prev' ? this.state.index - 1 :
-             this.state.index + 1,
+      index: newIndex,
+      contents: this.state.histories[newIndex]
     });
   }
   render() {
@@ -62,7 +64,7 @@ class Send extends Component {
           <textarea
             autoFocus
             className={styles.send.textarea}
-            value={this.state.histories[this.state.index] || this.state.contents}
+            value={this.state.contents || ''}
             onChange={this.onChange}
           />
           <button
