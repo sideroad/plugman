@@ -27,9 +27,22 @@
 }
 
 .bracket {
+  outline: none;
+  border: none;
+  background: none;
   width: 50px;
   text-align: center;
   font-size: 1.25em;
+  color: @light-primary;
+  cursor: pointer;
+}
+
+.bracket:disabled {
+  color: @fourth;
+}
+
+.left {
+  transform: rotate(180deg);
 }
 
 .container .send {

@@ -45,6 +45,7 @@ const Plug = props =>
           {
             props.sockets.map(socket =>
               <Socket
+                key={socket.id}
                 socket={socket}
                 onConnect={props.onConnect}
                 onDisconnect={props.onDisconnect}

@@ -17,7 +17,7 @@ class Socket extends React.Component {
   render() {
     const hoverClass = this.state.hoverPlug === null ? '' : this.state.hoverPlug ? styles.hovered : styles.unhovered;
     return (
-      <li className={styles.line} key={this.props.socket.id}>
+      <li className={styles.line} >
         <button
           className={`${styles.plugLeft} ${hoverClass}`}
           onMouseEnter={() => this.setState({ hoverPlug: true })}
@@ -39,7 +39,7 @@ class Socket extends React.Component {
 
 Socket.propTypes = {
   socket: PropTypes.object.isRequired,
-  onDisconnect: PropTypes.object.isRequired,
+  onDisconnect: PropTypes.func.isRequired,
 };
 
 export default Socket;

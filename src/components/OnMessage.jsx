@@ -2,12 +2,15 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 const styles = require('../css/on-message.less');
+const fa = require('../css/koiki-ui/fa/less/font-awesome.less');
 
 class OnMessage extends Component {
   constructor(props) {
     super(props);
     this.state = {
       message: '',
+      histories: [],
+      index: 0,
     };
   }
   componentDidMount() {
@@ -20,11 +23,19 @@ class OnMessage extends Component {
       }
       this.setState({
         message,
+        histories: this.state.histories.concat([message]),
+        index: this.state.histories.length,
       });
     };
   }
   componentWillUnmount() {
     this.props.socket.close();
+  }
+  onPrevNextHistory(operation) {
+    this.setState({
+      index: operation === 'prev' ? this.state.index - 1 :
+             this.state.index + 1,
+    });
   }
   render() {
     return (
@@ -33,13 +44,28 @@ class OnMessage extends Component {
           ws.onmessage
         </div>
         <div className={styles.container} >
-          <div className={styles.bracket} >(&quot;</div>
+          <button
+            disabled={this.state.index === 0}
+            className={`${styles.bracket} ${styles.left}`}
+            onClick={() => this.onPrevNextHistory('prev')}
+          >
+            <i className={`${fa.fa} ${fa['fa-play']}`} aria-hidden="true" />
+          </button>
           <pre
             className={styles.message}
           >
-            {this.state.message}
+            {this.state.histories[this.state.index]}
           </pre>
-          <div className={styles.bracket} >&quot;)</div>
+          <button
+            disabled={
+              !this.state.histories.length ||
+              this.state.index === this.state.histories.length - 1
+            }
+            className={`${styles.bracket} ${styles.right}`}
+            onClick={() => this.onPrevNextHistory('next')}
+          >
+            <i className={`${fa.fa} ${fa['fa-play']}`} aria-hidden="true" />
+          </button>
         </div>
       </div>
     );
