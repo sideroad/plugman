@@ -26,34 +26,33 @@ export default {
       credentials: 'include'
     }
   },
-  message: {
+  favorite: {
     gets: {
-      url: `${base}/bff/apis/plugman/messages`,
+      url: `${base}/bff/apis/plugman/favorites`,
       method: 'GET',
       defaults: {
         limit: 10000
       },
       credentials: 'include'
     },
-    bulkSave: {
-      url: `${base}/bff/apis/plugman/messages`,
+    add: {
+      url: `${base}/bff/apis/plugman/favorites`,
+      method: 'POST',
+      credentials: 'include',
+    },
+    update: {
+      url: `${base}/bff/apis/plugman/favorites/:favorite`,
       method: 'PATCH',
       credentials: 'include',
     },
     delete: {
-      url: `${base}/bff/apis/plugman/messages/:message`,
+      url: `${base}/bff/apis/plugman/favorites/:favorite`,
       method: 'DELETE',
-      defaults: {
-        limit: 10000
-      },
       credentials: 'include'
     },
     deletes: {
-      url: `${base}/bff/apis/plugman/messages`,
+      url: `${base}/bff/apis/plugman/favorites`,
       method: 'DELETE',
-      defaults: {
-        limit: 10000
-      },
       credentials: 'include'
     }
   }

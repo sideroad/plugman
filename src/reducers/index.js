@@ -3,13 +3,13 @@ import ws from './ws';
 import popup from './popup';
 import user from './user';
 import plug from './plug';
-import message from './message';
+import favorite from './favorite';
 import page from './page';
 
 export default {
   form,
   plug,
-  message,
+  favorite,
   page,
   user,
   popup,

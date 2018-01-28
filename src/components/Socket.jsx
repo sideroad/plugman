@@ -25,7 +25,12 @@ class Socket extends React.Component {
           onClick={() => this.props.onDisconnect(this.props.socket)}
         />
         <div className={styles.socket} >
-          <Send socket={this.props.socket} />
+          <Send
+            socket={this.props.socket}
+            favorites={this.props.favorites}
+            onSaveFavorite={this.props.onSaveFavorite}
+            onDeleteFavorite={this.props.onDeleteFavorite}
+          />
           <OnMessage socket={this.props.socket} />
         </div>
         <button
@@ -40,6 +45,9 @@ class Socket extends React.Component {
 Socket.propTypes = {
   socket: PropTypes.object.isRequired,
   onDisconnect: PropTypes.func.isRequired,
+  onSaveFavorite: PropTypes.func.isRequired,
+  onDeleteFavorite: PropTypes.func.isRequired,
+  favorites: PropTypes.array.isRequired,
 };
 
 export default Socket;

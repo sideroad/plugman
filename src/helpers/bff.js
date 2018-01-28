@@ -12,9 +12,9 @@ export default function bffFn(app) {
     'x-chaus-secret': config.chaus.secret
   };
 
-  const confirmPlugPermission = (req) => {
-    const uri = stringify(uris.apis.plug, {
-      plug: req.params.plug
+  const confirmPermission = (resource, req) => {
+    const uri = stringify(uris.apis[resource], {
+      [resource]: req.params[resource]
     });
     return fetch(`${apiBase}${uri}`, {
       method: 'GET',
@@ -73,7 +73,7 @@ export default function bffFn(app) {
               res.status(401).json({});
               return;
             }
-            confirmPlugPermission(req)
+            confirmPermission('plug', req)
               .then(() => {
                 const uri = stringify(uris.apis.plug, {
                   plug: req.params.plug
@@ -94,10 +94,83 @@ export default function bffFn(app) {
               res.status(401).json({});
               return;
             }
-            confirmPlugPermission(req)
+            confirmPermission('plug', req)
               .then(() => {
                 const uri = stringify(uris.apis.plug, {
                   plug: req.params.plug
+                });
+                fetch(`${apiBase}${uri}`, {
+                  method: 'DELETE',
+                  headers,
+                }).then(() => res.json({}));
+              }, () => res.status(401).json({}));
+          },
+        },
+      },
+      [`/bff${uris.apis.favorites}`]: {
+        GET: {
+          override: (req, res) => {
+            if (!req.isAuthenticated()) {
+              res.status(401).json({});
+              return;
+            }
+            fetch(`${apiBase}${uris.apis.favorites}?owner=${req.user.id}&plug=${req.query.plug}&limit=10000&orderBy=name`, {
+              method: 'GET',
+              headers,
+            }).then(fetched => fetched.json())
+              .then(json => res.json(json));
+          },
+        },
+        POST: {
+          override: (req, res) => {
+            if (!req.isAuthenticated()) {
+              res.status(401).json({});
+              return;
+            }
+            fetch(`${apiBase}${uris.apis.favorites}`, {
+              method: 'POST',
+              headers,
+              body: JSON.stringify({
+                ...req.body,
+                owner: req.user.id,
+              }),
+            }).then(fetched => fetched.json())
+              .then(json => res.json(json));
+          },
+        },
+      },
+      [`/bff${uris.apis.favorite}`]: {
+        PATCH: {
+          override: (req, res) => {
+            if (!req.isAuthenticated()) {
+              res.status(401).json({});
+              return;
+            }
+            confirmPermission('favorite', req)
+              .then(() => {
+                const uri = stringify(uris.apis.favorite, {
+                  favorite: req.params.favorite
+                });
+                fetch(`${apiBase}${uri}`, {
+                  method: 'PATCH',
+                  headers,
+                  body: JSON.stringify({
+                    ...req.body
+                  }),
+                }).then(() => res.json({}));
+              }, () => res.status(401).json({}));
+          },
+        },
+        DELETE: {
+          override: (req, res) => {
+            if (!req.isAuthenticated()) {
+              res.status(401).json({});
+              return;
+            }
+            confirmPermission('favorite', req)
+              .then(() => {
+                const uri = stringify(uris.apis.favorite, {
+                  favorite: req.params.favorite
                 });
                 fetch(`${apiBase}${uri}`, {
                   method: 'DELETE',

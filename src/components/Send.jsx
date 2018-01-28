@@ -15,10 +15,10 @@ class Send extends Component {
     super(props);
     this.state = {
       contents: '',
-      histories: [],
-      index: 0,
+      index: props.favorites.length,
     };
     this.onChange = this.onChange.bind(this);
+    this.onClickFavorite = this.onClickFavorite.bind(this);
     this.onSend = this.onSend.bind(this);
   }
   componentWillUnmount() {
@@ -29,13 +29,22 @@ class Send extends Component {
       contents: event.target.value,
     });
   }
+  onClickFavorite() {
+    const favorite = this.props.favorites[this.state.index];
+    if (favorite) {
+      this.props.onDeleteFavorite(favorite);
+    } else {
+      this.props.onSaveFavorite({
+        contents: this.state.contents,
+      });
+    }
+  }
   onSend() {
     if (this.state.contents) {
       this.props.socket.send(this.state.contents);
       this.setState({
         contents: '',
-        histories: this.state.histories.concat([this.state.contents]),
-        index: this.state.histories.length + 1,
+        index: this.props.favorites.length,
       });
     }
   }
@@ -44,14 +53,27 @@ class Send extends Component {
            this.state.index + 1;
     this.setState({
       index: newIndex,
-      contents: this.state.histories[newIndex]
+      contents: this.props.favorites[newIndex] ? this.props.favorites[newIndex].contents : ''
     });
   }
   render() {
+    const isFavorite = this.state.index !== this.props.favorites.length;
     return (
       <div className={styles.send.column}>
         <div className={styles.send.title}>
-          ws.send
+          <div>ws.send</div>
+          <button
+            className={styles.send.favorite}
+            onClick={this.onClickFavorite}
+          >
+            <i
+              className={`
+                ${styles.ui.fa.fa}
+                ${isFavorite ? styles.ui.fa['fa-heart'] : styles.ui.fa['fa-heart-o']}
+              `}
+              aria-hidden="true"
+            />
+          </button>
         </div>
         <div className={styles.send.container} >
           <button
@@ -68,7 +90,7 @@ class Send extends Component {
             onChange={this.onChange}
           />
           <button
-            disabled={this.state.index === this.state.histories.length}
+            disabled={this.state.index === this.props.favorites.length}
             className={`${styles.send.bracket} ${styles.send.right}`}
             onClick={() => this.onPrevNextHistory('next')}
           >
@@ -88,7 +110,10 @@ class Send extends Component {
 }
 
 Send.propTypes = {
-  socket: PropTypes.object.isRequired
+  socket: PropTypes.object.isRequired,
+  favorites: PropTypes.array.isRequired,
+  onDeleteFavorite: PropTypes.func.isRequired,
+  onSaveFavorite: PropTypes.func.isRequired,
 };
 
 export default Send;

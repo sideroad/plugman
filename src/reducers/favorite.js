@@ -1,21 +1,23 @@
-const GETS_START = 'message/GETS';
-const GETS_SUCCESS = 'message/GETS_SUCCESS';
-const GETS_FAIL = 'message/GETS_FAIL';
-const SAVE_START = 'message/SAVE';
-const SAVE_SUCCESS = 'message/SAVE_SUCCESS';
-const SAVE_FAIL = 'message/SAVE_FAIL';
-const UPDATE_START = 'message/UPDATE';
-const UPDATE_SUCCESS = 'message/UPDATE_SUCCESS';
-const UPDATE_FAIL = 'message/UPDATE_FAIL';
-const DELETE_START = 'message/DELETE';
-const DELETE_SUCCESS = 'message/DELETE_SUCCESS';
-const DELETE_FAIL = 'message/DELETE_FAIL';
+const GETS_START = 'favorite/GETS';
+const GETS_SUCCESS = 'favorite/GETS_SUCCESS';
+const GETS_FAIL = 'favorite/GETS_FAIL';
+const ADD_START = 'favorite/SAVE';
+const ADD_SUCCESS = 'favorite/ADD_SUCCESS';
+const ADD_FAIL = 'favorite/ADD_FAIL';
+const UPDATE_START = 'favorite/UPDATE';
+const UPDATE_SUCCESS = 'favorite/UPDATE_SUCCESS';
+const UPDATE_FAIL = 'favorite/UPDATE_FAIL';
+const DELETE_START = 'favorite/DELETE';
+const DELETE_SUCCESS = 'favorite/DELETE_SUCCESS';
+const DELETE_FAIL = 'favorite/DELETE_FAIL';
 
-const EDITING = 'message/EDITING';
-const CANCEL = 'message/CANCEL';
+const CHANGE = 'favorite/CHANGE';
+const EDITING = 'favorite/EDITING';
+const CANCEL = 'favorite/CANCEL';
 
 const initialState = {
   items: [],
+  loaded: false,
   err: undefined
 };
 export default function reducer(state = initialState, action = {}) {
@@ -29,7 +31,8 @@ export default function reducer(state = initialState, action = {}) {
       return {
         ...state,
         loading: false,
-        data: action.res.body.items,
+        loaded: true,
+        items: action.res.body.items,
       };
     case GETS_FAIL:
       return {
@@ -47,19 +50,20 @@ export default function reducer(state = initialState, action = {}) {
         ...state,
         editing: false
       };
-    case SAVE_START:
+    case ADD_START:
       return {
         ...state,
         loading: true
       };
-    case SAVE_SUCCESS:
+    case ADD_SUCCESS:
       return {
         ...state,
         loading: false,
+        loaded: false,
         editing: false,
         err: undefined,
       };
-    case SAVE_FAIL:
+    case ADD_FAIL:
       return {
         ...state,
         err: action.body,
@@ -73,6 +77,7 @@ export default function reducer(state = initialState, action = {}) {
       return {
         ...state,
         loading: false,
+        loaded: false,
         editing: false,
         err: undefined,
       };
@@ -90,6 +95,7 @@ export default function reducer(state = initialState, action = {}) {
       return {
         ...state,
         loading: false,
+        loaded: false,
         editing: false,
         err: undefined,
       };
@@ -97,6 +103,16 @@ export default function reducer(state = initialState, action = {}) {
       return {
         ...state,
         err: action.body
+      };
+    case CHANGE:
+      return {
+        ...state,
+        items: state.items.map(item => (
+          item.id === action.favorite.id ? {
+            ...item,
+            ...action.favorite,
+          } : item)
+        )
       };
     default:
       return state;
@@ -106,6 +122,13 @@ export default function reducer(state = initialState, action = {}) {
 export function add() {
   return {
     type: EDITING
+  };
+}
+
+export function change(favorite) {
+  return {
+    type: CHANGE,
+    favorite,
   };
 }
 

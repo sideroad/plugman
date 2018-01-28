@@ -7,6 +7,8 @@ export default {
   },
   apis: {
     plugs: '/apis/plugman/plugs',
-    plug: '/apis/plugman/plugs/:plug'
+    plug: '/apis/plugman/plugs/:plug',
+    favorites: '/apis/plugman/favorites',
+    favorite: '/apis/plugman/favorites/:favorite',
   }
 };

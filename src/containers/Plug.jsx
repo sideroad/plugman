@@ -30,9 +30,16 @@ const Plug = (props, { fetcher }) =>
     onDisconnect={(socket) => {
       props.disconnect(socket);
     }}
+    onSaveFavorite={(favorite) => {
+      props.saveFavorite(fetcher, favorite, props.plug);
+    }}
+    onDeleteFavorite={(favorite) => {
+      props.deleteFavorite(fetcher, favorite, props.plug);
+    }}
     onDelete={() => {
       props.delete(fetcher, props.plug, props.lang);
     }}
+    favorites={props.favorites}
   />;
 
 Plug.propTypes = {
@@ -43,8 +50,11 @@ Plug.propTypes = {
   connected: PropTypes.bool.isRequired,
   connect: PropTypes.func.isRequired,
   disconnect: PropTypes.func.isRequired,
+  saveFavorite: PropTypes.func.isRequired,
+  deleteFavorite: PropTypes.func.isRequired,
   change: PropTypes.func.isRequired,
   delete: PropTypes.func.isRequired,
+  favorites: PropTypes.array.isRequired,
 };
 
 Plug.contextTypes = {
@@ -59,6 +69,7 @@ const connected = connect(
     err: state.plug.err,
     connected: state.ws.connected,
     lang: props.params.lang,
+    favorites: state.favorite.items,
   }),
   dispatch => ({
     change: (plug) => {
@@ -90,9 +101,40 @@ const connected = connect(
       dispatch(pageActions.load());
       fetcher.plug.delete({
         plug: plug.id
-      }).then(() => {
+      }).then(() =>
+        fetcher.favorite.deletes({
+          plug: plug.id,
+        })
+      ).then(() => {
         dispatch(pageActions.finishLoad());
         dispatch(push(stringify(uris.pages.plugs, { lang })));
+      }, () => {
+        dispatch(pageActions.finishLoad());
+      });
+    },
+    saveFavorite: (fetcher, favorite, plug) => {
+      fetcher.favorite.add({
+        ...favorite,
+        plug: plug.id,
+      }).then(() =>
+        fetcher.favorite.gets({
+          plug: plug.id
+        })
+      ).then(() => {
+        dispatch(pageActions.finishLoad());
+      }, () => {
+        dispatch(pageActions.finishLoad());
+      });
+    },
+    deleteFavorite: (fetcher, favorite, plug) => {
+      fetcher.favorite.delete({
+        favorite: favorite.id,
+      }).then(() =>
+        fetcher.favorite.gets({
+          plug: plug.id
+        })
+      ).then(() => {
+        dispatch(pageActions.finishLoad());
       }, () => {
         dispatch(pageActions.finishLoad());
       });
@@ -102,9 +144,12 @@ const connected = connect(
 
 
 const asynced = asyncConnect([{
-  promise: ({ store }) =>
+  promise: ({ helpers: { fetcher }, store, params }) =>
     Promise.all([
       store.dispatch(wsActions.reset()),
+      fetcher.favorite.gets({
+        plug: params.plug
+      })
     ])
 }])(connected);
 

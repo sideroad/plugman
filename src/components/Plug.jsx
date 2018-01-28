@@ -46,9 +46,12 @@ const Plug = props =>
             props.sockets.map(socket =>
               <Socket
                 key={socket.id}
+                favorites={props.favorites}
                 socket={socket}
                 onConnect={props.onConnect}
                 onDisconnect={props.onDisconnect}
+                onSaveFavorite={props.onSaveFavorite}
+                onDeleteFavorite={props.onDeleteFavorite}
               />
             )
           }
@@ -68,12 +71,18 @@ const Plug = props =>
 
 Plug.propTypes = {
   sockets: PropTypes.array.isRequired,
+  // eslint-disable-next-line react/no-unused-prop-types
+  favorites: PropTypes.array.isRequired,
   plug: PropTypes.object.isRequired,
   connected: PropTypes.bool.isRequired,
   onChangeUrl: PropTypes.func.isRequired,
   onConnect: PropTypes.func.isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
   onDisconnect: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/no-unused-prop-types
+  onSaveFavorite: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/no-unused-prop-types
+  onDeleteFavorite: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
 };
 
