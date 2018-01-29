@@ -22,8 +22,8 @@ You can construct plugman on your local.
 | GLOBAL_PORT                  | 443                              | 443           |          | Please specify port                                                                         |
 | PLUGMAN_GITHUB_CLIENT_ID | aaaaaaaaaaaaaaaaaa             |               |          | Please specify github client ID. Github OAuth will be disabled if does not specified        |
 | PLUGMAN_GITHUB_CLIENT_SECRET   | bbbbbbbbbbbbbbbbbb |               |          | Please specify github client secret ID. This values required when KOIKI_PLUGMAN_GITHUB_CLIENT_ID has specified |
-| CHAUS_PLUGMAN_CLIENT_ID   | bbbbbbbbbbbbbbbbbb |               |          | Please specify chaus client ID. This values required when KOIKI_PLUGMAN_GITHUB_CLIENT_ID has specified |
-| CHAUS_PLUGMAN_SECRET_ID   | bbbbbbbbbbbbbbbbbb |               |          | Please specify github secret ID. This values required when KOIKI_PLUGMAN_GITHUB_CLIENT_ID has specified |
+| CHAUS_PLUGMAN_CLIENT_ID   | bbbbbbbbbbbbbbbbbb |               |          | Please specify chaus client ID. This value is required. |
+| CHAUS_PLUGMAN_SECRET_ID   | bbbbbbbbbbbbbbbbbb |               |          | Please specify github secret ID. This value is required. |
 
 ##### Starting application
 
