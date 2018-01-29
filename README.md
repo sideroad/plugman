@@ -3,7 +3,8 @@
 
 ## Why plugman?
 - Easy to connect websocket
-- Easy to send, logging onmessage data.
+- Easy to send message, save message as favorite
+- Display onmessage data, be able to confirm past onmessage after connected.
 
 ## Running plugman
 https://plugman.herokuapp.com
@@ -23,7 +24,6 @@ You can construct plugman on your local.
 | PLUGMAN_GITHUB_CLIENT_SECRET   | bbbbbbbbbbbbbbbbbb |               |          | Please specify github client secret ID. This values required when KOIKI_PLUGMAN_GITHUB_CLIENT_ID has specified |
 | CHAUS_PLUGMAN_CLIENT_ID   | bbbbbbbbbbbbbbbbbb |               |          | Please specify chaus client ID. This values required when KOIKI_PLUGMAN_GITHUB_CLIENT_ID has specified |
 | CHAUS_PLUGMAN_SECRET_ID   | bbbbbbbbbbbbbbbbbb |               |          | Please specify github secret ID. This values required when KOIKI_PLUGMAN_GITHUB_CLIENT_ID has specified |
-| PLUGMAN_MONGO_URL              | mongodb://localhost:27017        |               | Required | Please specify MongoDB URL                                                                  |
 
 ##### Starting application
 

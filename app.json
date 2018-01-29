@@ -3,17 +3,8 @@
   "description": "plugman",
   "repository": "https://github.com/sideroad/plugman",
   "keywords": [
-    "react",
-    "isomorphic",
-    "universal",
-    "webpack",
-    "express",
-    "hot reloading",
-    "react-hot-reloader",
-    "redux",
-    "starter",
-    "boilerplate",
-    "babel"
+    "websocket",
+    "debug"
   ],
   "env": {
     "NODE_ENV": {
@@ -33,13 +24,16 @@
       "description": "Please specify port"
     },
     "KOIKI_PLUGMAN_GITHUB_CLIENT_ID": {
-      "description": "Please specify github client ID. Github OAuth will be disabled if does not specified"
+      "description": "Please specify github client ID. This value is required."
     },
     "PLUGMAN_GITHUB_CLIENT_SECRET": {
-      "description": "Please specify github client secret ID. This values required when KOIKI_PLUGMAN_GITHUB_CLIENT_ID has specified"
+      "description": "Please specify github client secret ID. This value is required."
     },
-    "PLUGMAN_MONGO_URL": {
-      "description": "Please specify MongoDB URL"
+    "CHAUS_PLUGMAN_CLIENT_ID": {
+      "description": "Please specify chaus client ID. This value is required."
+    },
+    "CHAUS_PLUGMAN_SECRET_ID": {
+      "description": "Please specify github secret ID. This value is required."
     }
   },
   "addons": [
