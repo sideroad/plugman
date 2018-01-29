@@ -42,10 +42,6 @@ class Send extends Component {
   onSend() {
     if (this.state.contents) {
       this.props.socket.send(this.state.contents);
-      this.setState({
-        contents: '',
-        index: this.props.favorites.length,
-      });
     }
   }
   onPrevNextHistory(operation) {
