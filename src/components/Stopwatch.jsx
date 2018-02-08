@@ -20,6 +20,28 @@ class Stopwatch extends React.Component {
       interval: '1000',
       played: false
     };
+    this.handleOutsideClick = this.handleOutsideClick.bind(this);
+  }
+
+  componentDidMount() {
+    document.addEventListener('click', this.handleOutsideClick);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('click', this.handleOutsideClick);
+  }
+
+  handleOutsideClick(e) {
+    if (
+      this.popup &&
+      !this.popup.contains(e.target) &&
+      this.button &&
+      !this.button.contains(e.target)
+    ) {
+      this.setState({
+        isOpen: false
+      });
+    }
   }
 
   render() {
@@ -36,7 +58,12 @@ class Stopwatch extends React.Component {
           }
         ]}
       >
-        <div className={styles.stopwatch.stopwatch}>
+        <div
+          className={styles.stopwatch.stopwatch}
+          ref={(elem) => {
+            this.button = elem;
+          }}
+        >
           <Button
             className={`${styles.stopwatch.button}`}
             icon="fa-heartbeat"
@@ -49,7 +76,12 @@ class Stopwatch extends React.Component {
           />
         </div>
         {this.state.isOpen ? (
-          <div className={styles.stopwatch.popup}>
+          <div
+            className={styles.stopwatch.popup}
+            ref={(elem) => {
+              this.popup = elem;
+            }}
+          >
             <div>
               <input
                 className={styles.stopwatch.interval}
@@ -60,6 +92,7 @@ class Stopwatch extends React.Component {
                     interval: evt.target.value
                   });
                 }}
+                autoFocus
               />ms
             </div>
             <button

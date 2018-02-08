@@ -21,6 +21,11 @@ class Config extends React.Component {
       interval: String(props.keepalive.interval),
       enabled: props.keepalive.enabled
     };
+    this.handleOutsideClick = this.handleOutsideClick.bind(this);
+  }
+
+  componentDidMount() {
+    document.addEventListener('click', this.handleOutsideClick);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -37,6 +42,23 @@ class Config extends React.Component {
     }
   }
 
+  componentWillUnmount() {
+    document.removeEventListener('click', this.handleOutsideClick);
+  }
+
+  handleOutsideClick(e) {
+    if (
+      this.popup &&
+      !this.popup.contains(e.target) &&
+      this.button &&
+      !this.button.contains(e.target)
+    ) {
+      this.setState({
+        isOpen: false
+      });
+    }
+  }
+
   render() {
     return (
       <TetherComponent
@@ -48,7 +70,12 @@ class Config extends React.Component {
           }
         ]}
       >
-        <div className={styles.config.config}>
+        <div
+          className={styles.config.config}
+          ref={(elem) => {
+            this.button = elem;
+          }}
+        >
           <Button
             className={`${styles.config.cog} ${styles.config.button}`}
             icon="fa-cog"
@@ -61,7 +88,12 @@ class Config extends React.Component {
           />
         </div>
         {this.state.isOpen ? (
-          <div className={styles.config.popup}>
+          <div
+            className={styles.config.popup}
+            ref={(elem) => {
+              this.popup = elem;
+            }}
+          >
             <div className={styles.config.keepalive}>
               <Input
                 icon="no-icon"
