@@ -11,11 +11,12 @@ import uris from '../uris';
 import PlugComponent from '../components/Plug';
 import ws from '../helpers/ws';
 
-const Plug = (props, { fetcher }) =>
+const Plug = (props, { fetcher }) => (
   <PlugComponent
     lang={props.lang}
     err={props.err}
     plug={props.plug}
+    keepalive={props.keepalive}
     sockets={props.sockets}
     connected={props.connected}
     onChangeUrl={(event) => {
@@ -24,8 +25,14 @@ const Plug = (props, { fetcher }) =>
         url: event.target.value
       });
     }}
+    onChangeKeepalive={(keepalive) => {
+      props.updateKeepalive(fetcher, {
+        ...keepalive,
+        keepalive: props.plug.id
+      });
+    }}
     onConnect={() => {
-      props.connect(fetcher, props.plug);
+      props.connect(fetcher, props.plug, props.keepalive);
     }}
     onDisconnect={(socket) => {
       props.disconnect(socket);
@@ -40,12 +47,14 @@ const Plug = (props, { fetcher }) =>
       props.delete(fetcher, props.plug, props.lang);
     }}
     favorites={props.favorites}
-  />;
+  />
+);
 
 Plug.propTypes = {
   lang: PropTypes.string.isRequired,
   err: PropTypes.object,
   plug: PropTypes.object.isRequired,
+  keepalive: PropTypes.object.isRequired,
   sockets: PropTypes.array.isRequired,
   connected: PropTypes.bool.isRequired,
   connect: PropTypes.func.isRequired,
@@ -54,7 +63,8 @@ Plug.propTypes = {
   deleteFavorite: PropTypes.func.isRequired,
   change: PropTypes.func.isRequired,
   delete: PropTypes.func.isRequired,
-  favorites: PropTypes.array.isRequired,
+  updateKeepalive: PropTypes.func.isRequired,
+  favorites: PropTypes.array.isRequired
 };
 
 Plug.contextTypes = {
@@ -64,93 +74,128 @@ Plug.contextTypes = {
 const connected = connect(
   (state, props) => ({
     plug: state.plug.items.find(plug => plug.id === props.params.plug) || {},
+    keepalive: state.keepalive.item,
     sockets: state.ws.sockets,
     editing: state.plug.editing,
     err: state.plug.err,
     connected: state.ws.connected,
     lang: props.params.lang,
-    favorites: state.favorite.items,
+    favorites: state.favorite.items
   }),
   dispatch => ({
+    updateKeepalive: (fetcher, keepalive) => {
+      fetcher.keepalive.update(keepalive);
+    },
     change: (plug) => {
       dispatch(plugActions.change(plug));
     },
     disconnect: (websocket) => {
       dispatch(wsActions.disconnect(websocket));
     },
-    connect: (fetcher, plug) => {
+    connect: (fetcher, plug, keepalive) => {
       dispatch(pageActions.load());
-      fetcher.plug.update({
-        plug: plug.id,
-        url: plug.url,
-      })
-        .then(
-          () => {
-            const websocket = ws(plug.url);
-            websocket.onopen = () => {
-              dispatch(wsActions.connect(websocket));
-              dispatch(pageActions.finishLoad());
-            };
-            websocket.onclose = () => {
-              dispatch(wsActions.disconnect(websocket));
-              dispatch(pageActions.finishLoad());
-            };
-          });
+      fetcher.plug
+        .update({
+          plug: plug.id,
+          url: plug.url
+        })
+        .then(() => {
+          const websocket = ws(plug.url);
+          let intervalId;
+          websocket.onopen = () => {
+            dispatch(wsActions.connect(websocket));
+            dispatch(pageActions.finishLoad());
+            if (keepalive.enabled) {
+              intervalId = setInterval(() => {
+                websocket.send(keepalive.message);
+              }, keepalive.interval);
+            }
+          };
+          websocket.onclose = () => {
+            dispatch(wsActions.disconnect(websocket));
+            dispatch(pageActions.finishLoad());
+            if (intervalId) {
+              clearInterval(intervalId);
+            }
+          };
+        });
     },
     delete: (fetcher, plug, lang) => {
       dispatch(pageActions.load());
-      fetcher.plug.delete({
-        plug: plug.id
-      }).then(() =>
-        fetcher.favorite.deletes({
-          plug: plug.id,
+      fetcher.plug
+        .delete({
+          plug: plug.id
         })
-      ).then(() => {
-        dispatch(pageActions.finishLoad());
-        dispatch(push(stringify(uris.pages.plugs, { lang })));
-      }, () => {
-        dispatch(pageActions.finishLoad());
-      });
+        .then(() =>
+          fetcher.favorite.deletes({
+            plug: plug.id
+          })
+        )
+        .then(
+          () => {
+            dispatch(pageActions.finishLoad());
+            dispatch(push(stringify(uris.pages.plugs, { lang })));
+          },
+          () => {
+            dispatch(pageActions.finishLoad());
+          }
+        );
     },
     saveFavorite: (fetcher, favorite, plug) => {
-      fetcher.favorite.add({
-        ...favorite,
-        plug: plug.id,
-      }).then(() =>
-        fetcher.favorite.gets({
+      fetcher.favorite
+        .add({
+          ...favorite,
           plug: plug.id
         })
-      ).then(() => {
-        dispatch(pageActions.finishLoad());
-      }, () => {
-        dispatch(pageActions.finishLoad());
-      });
+        .then(() =>
+          fetcher.favorite.gets({
+            plug: plug.id
+          })
+        )
+        .then(
+          () => {
+            dispatch(pageActions.finishLoad());
+          },
+          () => {
+            dispatch(pageActions.finishLoad());
+          }
+        );
     },
     deleteFavorite: (fetcher, favorite, plug) => {
-      fetcher.favorite.delete({
-        favorite: favorite.id,
-      }).then(() =>
-        fetcher.favorite.gets({
-          plug: plug.id
+      fetcher.favorite
+        .delete({
+          favorite: favorite.id
         })
-      ).then(() => {
-        dispatch(pageActions.finishLoad());
-      }, () => {
-        dispatch(pageActions.finishLoad());
-      });
+        .then(() =>
+          fetcher.favorite.gets({
+            plug: plug.id
+          })
+        )
+        .then(
+          () => {
+            dispatch(pageActions.finishLoad());
+          },
+          () => {
+            dispatch(pageActions.finishLoad());
+          }
+        );
     }
   })
 )(Plug);
 
-
-const asynced = asyncConnect([{
-  promise: ({ helpers: { fetcher }, store, params }) =>
-    Promise.all([
-      store.dispatch(wsActions.reset()),
-      fetcher.favorite.gets({
-        plug: params.plug
-      })
-    ])
-}])(connected);
+const asynced = asyncConnect([
+  {
+    promise: ({ helpers: { fetcher }, store, params }) =>
+      Promise.all([
+        store.dispatch(wsActions.reset()),
+        fetcher.favorite.gets({
+          plug: params.plug
+        }),
+        fetcher.keepalive.get({
+          keepalive: params.plug
+        })
+      ])
+  }
+])(connected);
 
 export default asynced;

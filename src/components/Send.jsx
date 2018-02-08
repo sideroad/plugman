@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'koiki-ui';
+import Stopwatch from './Stopwatch';
 
 const styles = {
   send: require('../css/send.less'),
   ui: {
     fa: require('../css/koiki-ui/fa/less/font-awesome.less'),
-    button: require('../css/koiki-ui/button.less'),
-  },
+    button: require('../css/koiki-ui/button.less')
+  }
 };
 
 class Send extends Component {
@@ -16,17 +17,19 @@ class Send extends Component {
     this.state = {
       contents: '',
       index: props.favorites.length,
+      timer: 0
     };
     this.onChange = this.onChange.bind(this);
     this.onClickFavorite = this.onClickFavorite.bind(this);
     this.onSend = this.onSend.bind(this);
+    this.timer = this.timer.bind(this);
   }
   componentWillUnmount() {
     this.props.socket.close();
   }
   onChange(event) {
     this.setState({
-      contents: event.target.value,
+      contents: event.target.value
     });
   }
   onClickFavorite() {
@@ -35,7 +38,7 @@ class Send extends Component {
       this.props.onDeleteFavorite(favorite);
     } else {
       this.props.onSaveFavorite({
-        contents: this.state.contents,
+        contents: this.state.contents
       });
     }
   }
@@ -45,12 +48,19 @@ class Send extends Component {
     }
   }
   onPrevNextHistory(operation) {
-    const newIndex = operation === 'prev' ? this.state.index - 1 :
-           this.state.index + 1;
+    const newIndex = operation === 'prev' ? this.state.index - 1 : this.state.index + 1;
     this.setState({
       index: newIndex,
       contents: this.props.favorites[newIndex] ? this.props.favorites[newIndex].contents : ''
     });
+  }
+  timer() {
+    if (this.state.timer) {
+      setTimeout(() => {
+        this.onSend();
+        this.timer();
+      }, this.state.timer);
+    }
   }
   render() {
     const isFavorite = this.state.index !== this.props.favorites.length;
@@ -58,10 +68,7 @@ class Send extends Component {
       <div className={styles.send.column}>
         <div className={styles.send.title}>
           <div>ws.send</div>
-          <button
-            className={styles.send.favorite}
-            onClick={this.onClickFavorite}
-          >
+          <button className={styles.send.favorite} onClick={this.onClickFavorite}>
             <i
               className={`
                 ${styles.ui.fa.fa}
@@ -71,7 +78,7 @@ class Send extends Component {
             />
           </button>
         </div>
-        <div className={styles.send.container} >
+        <div className={styles.send.container}>
           <button
             disabled={this.state.index === 0}
             className={`${styles.send.bracket} ${styles.send.left}`}
@@ -99,6 +106,23 @@ class Send extends Component {
             styles={styles.ui}
             onClick={this.onSend}
           />
+          <Stopwatch
+            onStart={(interval) => {
+              this.setState(
+                {
+                  timer: interval
+                },
+                () => {
+                  this.timer();
+                }
+              );
+            }}
+            onStop={() => {
+              this.setState({
+                timer: 0
+              });
+            }}
+          />
         </div>
       </div>
     );
@@ -109,7 +133,7 @@ Send.propTypes = {
   socket: PropTypes.object.isRequired,
   favorites: PropTypes.array.isRequired,
   onDeleteFavorite: PropTypes.func.isRequired,
-  onSaveFavorite: PropTypes.func.isRequired,
+  onSaveFavorite: PropTypes.func.isRequired
 };
 
 export default Send;

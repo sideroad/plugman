@@ -32,7 +32,7 @@ export default function reducer(state = initialState, action = {}) {
         ...state,
         loading: false,
         loaded: true,
-        items: action.res.body.items,
+        items: action.res.body.items
       };
     case GETS_FAIL:
       return {
@@ -61,12 +61,12 @@ export default function reducer(state = initialState, action = {}) {
         loading: false,
         loaded: false,
         editing: false,
-        err: undefined,
+        err: undefined
       };
     case ADD_FAIL:
       return {
         ...state,
-        err: action.body,
+        err: action.body
       };
     case UPDATE_START:
       return {
@@ -79,12 +79,12 @@ export default function reducer(state = initialState, action = {}) {
         loading: false,
         loaded: false,
         editing: false,
-        err: undefined,
+        err: undefined
       };
     case UPDATE_FAIL:
       return {
         ...state,
-        err: action.body,
+        err: action.body
       };
     case DELETE_START:
       return {
@@ -97,7 +97,7 @@ export default function reducer(state = initialState, action = {}) {
         loading: false,
         loaded: false,
         editing: false,
-        err: undefined,
+        err: undefined
       };
     case DELETE_FAIL:
       return {
@@ -107,11 +107,14 @@ export default function reducer(state = initialState, action = {}) {
     case CHANGE:
       return {
         ...state,
-        items: state.items.map(item => (
-          item.id === action.plug.id ? {
-            ...item,
-            ...action.plug,
-          } : item)
+        items: state.items.map(
+          item =>
+            item.id === action.plug.id
+              ? {
+                ...item,
+                ...action.plug
+              }
+              : item
         )
       };
     default:
@@ -128,7 +131,7 @@ export function add() {
 export function change(plug) {
   return {
     type: CHANGE,
-    plug,
+    plug
   };
 }
 

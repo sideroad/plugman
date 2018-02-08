@@ -1,4 +1,5 @@
 import { reducer as form } from 'redux-form';
+import keepalive from './keepalive';
 import ws from './ws';
 import popup from './popup';
 import user from './user';
@@ -13,5 +14,6 @@ export default {
   page,
   user,
   popup,
-  ws
+  ws,
+  keepalive
 };

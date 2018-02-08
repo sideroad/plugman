@@ -1,4 +1,3 @@
-
 export default {
   pages: {
     root: '/:lang',
@@ -10,5 +9,7 @@ export default {
     plug: '/apis/plugman/plugs/:plug',
     favorites: '/apis/plugman/favorites',
     favorite: '/apis/plugman/favorites/:favorite',
+    keepalive: '/apis/plugman/keepalives/:keepalive',
+    keepalives: '/apis/plugman/keepalives'
   }
 };

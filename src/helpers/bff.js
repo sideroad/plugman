@@ -18,14 +18,10 @@ export default function bffFn(app) {
     });
     return fetch(`${apiBase}${uri}`, {
       method: 'GET',
-      headers,
+      headers
     })
       .then(fetched => fetched.json())
-      .then(json => (
-        json.owner === req.user.id ?
-          Promise.resolve() :
-          Promise.reject()
-      ));
+      .then(json => (json.owner === req.user.id ? Promise.resolve() : Promise.reject()));
   };
 
   proxy({
@@ -43,10 +39,11 @@ export default function bffFn(app) {
             }
             fetch(`${apiBase}${uris.apis.plugs}?owner=${req.user.id}&limit=10000&orderBy=name`, {
               method: 'GET',
-              headers,
-            }).then(fetched => fetched.json())
+              headers
+            })
+              .then(fetched => fetched.json())
               .then(json => res.json(json));
-          },
+          }
         },
         POST: {
           override: (req, res) => {
@@ -59,12 +56,13 @@ export default function bffFn(app) {
               headers,
               body: JSON.stringify({
                 ...req.body,
-                owner: req.user.id,
-              }),
-            }).then(fetched => fetched.json())
+                owner: req.user.id
+              })
+            })
+              .then(fetched => fetched.json())
               .then(json => res.json(json));
-          },
-        },
+          }
+        }
       },
       [`/bff${uris.apis.plug}`]: {
         PATCH: {
@@ -73,8 +71,8 @@ export default function bffFn(app) {
               res.status(401).json({});
               return;
             }
-            confirmPermission('plug', req)
-              .then(() => {
+            confirmPermission('plug', req).then(
+              () => {
                 const uri = stringify(uris.apis.plug, {
                   plug: req.params.plug
                 });
@@ -83,10 +81,12 @@ export default function bffFn(app) {
                   headers,
                   body: JSON.stringify({
                     ...req.body
-                  }),
+                  })
                 }).then(() => res.json({}));
-              }, () => res.status(401).json({}));
-          },
+              },
+              () => res.status(401).json({})
+            );
+          }
         },
         DELETE: {
           override: (req, res) => {
@@ -94,18 +94,88 @@ export default function bffFn(app) {
               res.status(401).json({});
               return;
             }
-            confirmPermission('plug', req)
-              .then(() => {
+            confirmPermission('plug', req).then(
+              () => {
                 const uri = stringify(uris.apis.plug, {
                   plug: req.params.plug
                 });
                 fetch(`${apiBase}${uri}`, {
                   method: 'DELETE',
-                  headers,
+                  headers
                 }).then(() => res.json({}));
-              }, () => res.status(401).json({}));
-          },
+              },
+              () => res.status(401).json({})
+            );
+          }
+        }
+      },
+      [`/bff${uris.apis.keepalive}`]: {
+        GET: {
+          override: (req, res) => {
+            if (!req.isAuthenticated()) {
+              res.status(401).json({});
+              return;
+            }
+            const keepalive = req.params.keepalive;
+            const uri = stringify(uris.apis.keepalive, {
+              keepalive
+            });
+            fetch(`${apiBase}${uri}`, {
+              method: 'GET',
+              headers
+            })
+              .then(
+                fetched =>
+                  fetched.ok
+                    ? fetched.json()
+                    : {
+                      id: keepalive,
+                      plug: {
+                        id: keepalive
+                      },
+                      message: 'KEEPALIVE',
+                      interval: 5000,
+                      enabled: false
+                    }
+              )
+              .then(json => res.json(json));
+          }
         },
+        PATCH: {
+          override: (req, res) => {
+            if (!req.isAuthenticated()) {
+              res.status(401).json({});
+              return;
+            }
+            const uri = stringify(uris.apis.keepalive, {
+              keepalive: req.params.keepalive
+            });
+            fetch(`${apiBase}${uri}`, {
+              method: 'PATCH',
+              headers,
+              body: JSON.stringify({
+                ...req.body,
+                owner: req.user.id
+              })
+            })
+              .then(
+                fetched =>
+                  fetched.ok
+                    ? fetched
+                    : fetch(`${apiBase}${uris.apis.keepalives}`, {
+                      method: 'POST',
+                      headers,
+                      body: JSON.stringify({
+                        ...req.body,
+                        plug: req.params.keepalive,
+                        owner: req.user.id
+                      })
+                    })
+              )
+              .then(fetched => fetched.json())
+              .then(json => res.json(json));
+          }
+        }
       },
       [`/bff${uris.apis.favorites}`]: {
         GET: {
@@ -114,12 +184,18 @@ export default function bffFn(app) {
               res.status(401).json({});
               return;
             }
-            fetch(`${apiBase}${uris.apis.favorites}?owner=${req.user.id}&plug=${req.query.plug}&limit=10000&orderBy=name`, {
-              method: 'GET',
-              headers,
-            }).then(fetched => fetched.json())
+            fetch(
+              `${apiBase}${uris.apis.favorites}?owner=${req.user.id}&plug=${
+                req.query.plug
+              }&limit=10000&orderBy=name`,
+              {
+                method: 'GET',
+                headers
+              }
+            )
+              .then(fetched => fetched.json())
               .then(json => res.json(json));
-          },
+          }
         },
         POST: {
           override: (req, res) => {
@@ -132,12 +208,13 @@ export default function bffFn(app) {
               headers,
               body: JSON.stringify({
                 ...req.body,
-                owner: req.user.id,
-              }),
-            }).then(fetched => fetched.json())
+                owner: req.user.id
+              })
+            })
+              .then(fetched => fetched.json())
               .then(json => res.json(json));
-          },
-        },
+          }
+        }
       },
       [`/bff${uris.apis.favorite}`]: {
         PATCH: {
@@ -146,8 +223,8 @@ export default function bffFn(app) {
               res.status(401).json({});
               return;
             }
-            confirmPermission('favorite', req)
-              .then(() => {
+            confirmPermission('favorite', req).then(
+              () => {
                 const uri = stringify(uris.apis.favorite, {
                   favorite: req.params.favorite
                 });
@@ -156,10 +233,12 @@ export default function bffFn(app) {
                   headers,
                   body: JSON.stringify({
                     ...req.body
-                  }),
+                  })
                 }).then(() => res.json({}));
-              }, () => res.status(401).json({}));
-          },
+              },
+              () => res.status(401).json({})
+            );
+          }
         },
         DELETE: {
           override: (req, res) => {
@@ -167,19 +246,21 @@ export default function bffFn(app) {
               res.status(401).json({});
               return;
             }
-            confirmPermission('favorite', req)
-              .then(() => {
+            confirmPermission('favorite', req).then(
+              () => {
                 const uri = stringify(uris.apis.favorite, {
                   favorite: req.params.favorite
                 });
                 fetch(`${apiBase}${uri}`, {
                   method: 'DELETE',
-                  headers,
+                  headers
                 }).then(() => res.json({}));
-              }, () => res.status(401).json({}));
-          },
-        },
-      },
-    },
+              },
+              () => res.status(401).json({})
+            );
+          }
+        }
+      }
+    }
   });
 }

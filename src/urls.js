@@ -26,9 +26,21 @@ export default {
       credentials: 'include'
     }
   },
+  keepalive: {
+    get: {
+      url: `${base}/bff${uris.apis.keepalive}`,
+      method: 'GET',
+      credentials: 'include'
+    },
+    update: {
+      url: `${base}/bff${uris.apis.keepalive}`,
+      method: 'PATCH',
+      credentials: 'include'
+    }
+  },
   favorite: {
     gets: {
-      url: `${base}/bff/apis/plugman/favorites`,
+      url: `${base}/bff${uris.apis.favorites}`,
       method: 'GET',
       defaults: {
         limit: 10000
@@ -36,22 +48,22 @@ export default {
       credentials: 'include'
     },
     add: {
-      url: `${base}/bff/apis/plugman/favorites`,
+      url: `${base}/bff${uris.apis.favorites}`,
       method: 'POST',
-      credentials: 'include',
+      credentials: 'include'
     },
     update: {
-      url: `${base}/bff/apis/plugman/favorites/:favorite`,
+      url: `${base}/bff${uris.apis.favorite}`,
       method: 'PATCH',
-      credentials: 'include',
+      credentials: 'include'
     },
     delete: {
-      url: `${base}/bff/apis/plugman/favorites/:favorite`,
+      url: `${base}/bff${uris.apis.favorite}`,
       method: 'DELETE',
       credentials: 'include'
     },
     deletes: {
-      url: `${base}/bff/apis/plugman/favorites`,
+      url: `${base}/bff${uris.apis.favorites}`,
       method: 'DELETE',
       credentials: 'include'
     }

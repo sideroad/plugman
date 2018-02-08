@@ -1,0 +1,76 @@
+@import "variables.less";
+
+.tether {
+  z-index: 10;
+}
+
+.stopwatch {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+}
+
+.popup .button,
+.stopwatch .button {
+  width: 50px;
+  font-size: 0.8em;
+  padding: 0;
+  height: 50px;
+  margin-left: 10px;
+}
+
+.popup .button button,
+.stopwatch .button button {
+  padding: 0;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.stopwatch .button button {
+  background-color: @light-secondary;
+}
+
+.popup .button button i,
+.stopwatch .button button i {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.popup {
+  border: 2px solid @primary;
+  background-color: @third;
+  border-radius: 50%;
+  padding: 20px;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-left: 5px;
+  margin-bottom: 5px;
+}
+
+.popup input {
+  padding-left: 0;
+}
+
+.popup .interval {
+  width: 90px;
+  border: none;
+  font-size: 2em;
+  text-align: right;
+  border: none;
+  font-size: 2em;
+  cursor: pointer;
+  outline: none;
+}
+
+.popup .player {
+  color: @light-secondary;
+  border: none;
+  font-size: 2em;
+  cursor: pointer;
+  outline: none;
+}

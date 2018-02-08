@@ -1,0 +1,60 @@
+@import "variables.less";
+
+.popup .button,
+.config .button {
+  width: 50px;
+  font-size: 0.8em;
+  padding: 0;
+  height: 50px;
+  margin-left: 10px;
+}
+
+.popup .button button,
+.config .button button {
+  padding: 0;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.popup .button button i,
+.config .button button i {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.popup {
+  border: 2px solid @primary;
+  background-color: @third;
+  border-radius: 10px;
+  padding: 20px;
+  width: 500px;
+  margin-top: 5px;
+}
+
+.popup input {
+  padding-left: 0.5em;
+}
+
+.keepalive {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.keepalive .message {
+  width: 300px;
+  margin-right: 10px;
+}
+
+.keepalive .interval {
+  width: 100px;
+}
+
+.keepalive .enabled button {
+  background-color: @light-secondary;
+}
+
+.keepalive .disabled button {
+  background-color: @secondary;
+}
