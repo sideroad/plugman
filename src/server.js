@@ -22,19 +22,23 @@ app.use(compression());
 app.use(favicon(path.join(__dirname, '..', 'static', 'images', 'favicon.png')));
 app.use(express.static(path.join(__dirname, '..', 'static')));
 
-let clients = [];
-app.ws('/ws', (ws) => {
+const clients = {};
+app.ws('/ws/:id', (ws, req) => {
+  const id = req.params.id;
+  if (!clients[id]) {
+    clients[id] = [];
+  }
   // eslint-disable-next-line no-param-reassign
   ws.id = uuid.v4();
-  clients.push(ws);
+  clients[id].push(ws);
   ws.on('message', (msg) => {
-    clients.forEach((client) => {
+    clients[id].forEach((client) => {
       client.send(msg);
     });
   });
   ws.on('close', () => {
     // eslint-disable-next-line no-param-reassign
-    clients = clients.filter(client => client.id !== ws.id);
+    clients[id] = clients[id].filter(client => client.id !== ws.id);
   });
 });
 
@@ -57,7 +61,7 @@ server({
   },
   manifest: {
     name: config.app.title,
-    description: config.app.description,
+    description: config.app.description
   },
   colors: {
     background: '#595455',
@@ -67,13 +71,16 @@ server({
 });
 
 if (config.port) {
-
   app.listen(config.port, (err) => {
     if (err) {
       console.error(err);
     }
     console.info('----\n==> ✅  %s is running, talking to API server.', config.app.title);
-    console.info('==> 💻  Open http://%s:%s in a browser to view the app.', config.host, config.port);
+    console.info(
+      '==> 💻  Open http://%s:%s in a browser to view the app.',
+      config.host,
+      config.port
+    );
   });
 } else {
   console.error('==>     ERROR: No PORT environment variable has been specified');

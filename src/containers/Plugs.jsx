@@ -15,11 +15,11 @@ import styles from '../css/plugs.less';
 const Plugs = (props, context) => {
   const save = props.save;
   return (
-    <div className={props.open ? styles.fixed : ''} >
+    <div className={props.open ? styles.fixed : ''}>
       <Header
         toggle={props.toggleSidebar}
         url={stringify(uris.pages.plugs, {
-          lang: props.lang,
+          lang: props.lang
         })}
         open={props.open}
       />
@@ -37,9 +37,7 @@ const Plugs = (props, context) => {
             onSave={values => save(context.fetcher, values, props.user, props.lang)}
           />
         </div>
-        <div className={`${styles.right} ${props.open ? styles.open : ''}`} >
-          {props.children}
-        </div>
+        <div className={`${styles.right} ${props.open ? styles.open : ''}`}>{props.children}</div>
       </div>
       <button
         className={`${styles.modal} ${props.open ? styles.open : ''}`}
@@ -63,11 +61,11 @@ Plugs.propTypes = {
   toggleSidebar: PropTypes.func.isRequired,
   closeSidebar: PropTypes.func.isRequired,
   err: PropTypes.object,
-  selected: PropTypes.string,
+  selected: PropTypes.string
 };
 
 Plugs.contextTypes = {
-  fetcher: PropTypes.object.isRequired,
+  fetcher: PropTypes.object.isRequired
 };
 
 const connected = connect(
@@ -78,7 +76,7 @@ const connected = connect(
     user: state.user.item,
     selected: props.params.plug,
     lang: props.params.lang,
-    open: state.page.open,
+    open: state.page.open
   }),
   dispatch => ({
     cancel: () => dispatch(cancel()),
@@ -87,20 +85,26 @@ const connected = connect(
       if (values.name) {
         dispatch(closeSidebar());
         dispatch(load());
-        fetcher.plug.add({
-          ...values,
-          owner: user.id,
-        })
-          .then(res_ =>
-            fetcher.plug.gets()
-              .then(() => {
+        fetcher.plug
+          .add({
+            ...values,
+            owner: user.id
+          })
+          .then(
+            res =>
+              fetcher.plug.gets().then(() => {
                 dispatch(finishLoad());
-                dispatch(push(stringify(uris.pages.plug, {
-                  lang,
-                  plug: console.log(res_) || res_.body.id,
-                })));
+                dispatch(
+                  push(
+                    stringify(uris.pages.plug, {
+                      lang,
+                      plug: res.body.id
+                    })
+                  )
+                );
               }),
-          () => dispatch(finishLoad()));
+            () => dispatch(finishLoad())
+          );
       }
     },
     toggleSidebar: () => dispatch(toggleSidebar()),
@@ -108,15 +112,11 @@ const connected = connect(
   })
 )(Plugs);
 
-
-const asynced = asyncConnect([{
-  promise: ({ helpers: { fetcher }, store }) =>
-    Promise.all([
-      !store.getState().plug.loaded ?
-        fetcher.plug.gets()
-      :
-        Promise.resolve(),
-    ])
-}])(connected);
+const asynced = asyncConnect([
+  {
+    promise: ({ helpers: { fetcher }, store }) =>
+      Promise.all([!store.getState().plug.loaded ? fetcher.plug.gets() : Promise.resolve()])
+  }
+])(connected);
 
 export default asynced;

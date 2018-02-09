@@ -214,6 +214,22 @@ export default function bffFn(app) {
               .then(fetched => fetched.json())
               .then(json => res.json(json));
           }
+        },
+        DELETE: {
+          override: (req, res) => {
+            if (!req.isAuthenticated()) {
+              res.status(401).json({});
+              return;
+            }
+            fetch(`${apiBase}${uris.apis.favorites}`, {
+              method: 'DELETE',
+              headers,
+              body: JSON.stringify({
+                ...req.body,
+                owner: req.user.id
+              })
+            }).then(() => res.json({}));
+          }
         }
       },
       [`/bff${uris.apis.favorite}`]: {
