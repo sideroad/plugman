@@ -11,6 +11,8 @@ const styles = {
   }
 };
 
+const DISCONNECTED = 3;
+
 class Send extends Component {
   constructor(props) {
     super(props);
@@ -57,8 +59,10 @@ class Send extends Component {
   timer() {
     if (this.state.timer) {
       setTimeout(() => {
-        this.onSend();
-        this.timer();
+        if (this.props.socket.readyState !== DISCONNECTED) {
+          this.onSend();
+          this.timer();
+        }
       }, this.state.timer);
     }
   }
