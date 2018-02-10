@@ -3,7 +3,7 @@ import favicon from 'serve-favicon';
 import compression from 'compression';
 import path from 'path';
 import PrettyError from 'pretty-error';
-import uuid from 'uuid';
+import uuid from 'uuid-base62';
 
 import config from './config';
 import urls from './urls';

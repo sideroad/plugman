@@ -52,11 +52,6 @@ class Stopwatch extends React.Component {
         }}
         attachment="bottom center"
         targetAttachment="top center"
-        constraints={[
-          {
-            to: 'scrollParent'
-          }
-        ]}
       >
         <div
           className={styles.stopwatch.stopwatch}

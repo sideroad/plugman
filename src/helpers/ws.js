@@ -1,4 +1,4 @@
-import uuid from 'uuid';
+import uuid from 'uuid-base62';
 
 export default function wsFn(url) {
   const WebSocket = window.WebSocket || window.MozWebsocket;

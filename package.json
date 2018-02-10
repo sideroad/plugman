@@ -63,7 +63,7 @@
     "redux-form": "^7.1.0",
     "redux-router": "1.0.0-beta5",
     "serve-favicon": "^2.3.0",
-    "uuid": "^2.0.3",
+    "uuid-base62": "^0.1.0",
     "vis": "^4.16.1",
     "wildcard": "^1.1.2"
   },

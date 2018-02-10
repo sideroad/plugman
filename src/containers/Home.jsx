@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { stringify } from 'koiki';
 import { asyncConnect } from 'redux-connect';
 import { push } from 'react-router-redux';
-import uuid from 'uuid';
+import uuid from 'uuid-base62';
 import styles from '../css/home.less';
 import { load, finishLoad } from '../reducers/page';
 import uris from '../uris';
