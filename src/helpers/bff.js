@@ -151,24 +151,29 @@ export default function bffFn(app) {
               keepalive: req.params.keepalive
             });
             fetch(`${apiBase}${uri}`, {
-              method: 'PATCH',
-              headers,
-              body: JSON.stringify({
-                message: req.body.message,
-                enabled: req.body.enabled,
-                interval: req.body.interval,
-                owner: req.user.id
-              })
+              method: 'GET',
+              headers
             })
               .then(
                 fetched =>
                   fetched.ok
-                    ? fetched
+                    ? fetch(`${apiBase}${uri}`, {
+                      method: 'PATCH',
+                      headers,
+                      body: JSON.stringify({
+                        message: req.body.message,
+                        enabled: req.body.enabled,
+                        interval: req.body.interval,
+                        owner: req.user.id
+                      })
+                    })
                     : fetch(`${apiBase}${uris.apis.keepalives}`, {
                       method: 'POST',
                       headers,
                       body: JSON.stringify({
-                        ...req.body,
+                        message: req.body.message,
+                        enabled: req.body.enabled,
+                        interval: req.body.interval,
                         plug: req.params.keepalive,
                         owner: req.user.id
                       })
