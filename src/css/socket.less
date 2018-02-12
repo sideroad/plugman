@@ -1,6 +1,5 @@
 @import "variables.less";
 
-
 .line {
   position: relative;
   width: 770px;
@@ -40,56 +39,133 @@
 .plugLeft {
   background-image: url(../images/plug-left.png);
   animation: plugin-left 5s cubic-bezier(0.645, 0.045, 0.355, 1);
-  animation-fill-mode:forwards;
+  animation-fill-mode: forwards;
   left: -45px;
 }
+
 .plugRight {
   background-image: url(../images/plug-right.png);
   animation: plugin-right 5s cubic-bezier(0.645, 0.045, 0.355, 1);
-  animation-fill-mode:forwards;
+  animation-fill-mode: forwards;
   right: -45px;
 }
+
 .plugLeft.hovered {
   animation: plugouthalf-left 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
-  animation-fill-mode:forwards;
+  animation-fill-mode: forwards;
   left: -17.5px;
 }
+
 .plugRight.hovered {
   animation: plugouthalf-right 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
-  animation-fill-mode:forwards;
+  animation-fill-mode: forwards;
   right: -17.5px;
 }
+
 .plugLeft.unhovered {
   animation: plugin-left 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
-  animation-fill-mode:forwards;
+  animation-fill-mode: forwards;
   left: -27.5px;
 }
+
 .plugRight.unhovered {
   animation: plugin-right 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
-  animation-fill-mode:forwards;
+  animation-fill-mode: forwards;
   right: -27.5px;
 }
 
-@keyframes plugin-left{
+@keyframes plugin-left {
   100% {
     left: -17.5px;
   }
 }
 
-@keyframes plugin-right{
+@keyframes plugin-right {
   100% {
     right: -17.5px;
   }
 }
 
-@keyframes plugouthalf-left{
+@keyframes plugouthalf-left {
   100% {
     left: -27.5px;
   }
 }
 
-@keyframes plugouthalf-right{
+@keyframes plugouthalf-right {
   100% {
     right: -27.5px;
+  }
+}
+
+.plugball {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  top: 50%;
+  transform: translate(-25px, -25px);
+  background-color: @light-third;
+  color: @third;
+  opacity: 0;
+  animation-fill-mode: forwards;
+  z-index: 0;
+}
+
+.electric {
+  animation: roll 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  width: 50px;
+  height: 50px;
+}
+
+.sends {
+  animation: sends 0.5s linear;
+  left: 35px;
+}
+
+.receives {
+  animation: receives 0.5s linear;
+  right: 35px;
+}
+
+@keyframes sends {
+  0% {
+    transform: translate(-25px, -30px);
+    opacity: 1;
+    z-index: 1;
+  }
+
+  100% {
+    transform: translate(-80px, -30px);
+    opacity: 0;
+  }
+}
+
+@keyframes receives {
+  0% {
+    transform: translate(80px, -30px);
+    opacity: 1;
+    z-index: 1;
+  }
+
+  100% {
+    transform: translate(25px, -30px);
+    opacity: 0;
+  }
+}
+
+@keyframes roll {
+  0% {
+    transform: scale(1) rotate(0);
+  }
+
+  50% {
+    transform: scale(0.5) rotate(180deg);
+  }
+
+  100% {
+    transform: scale(1) rotate(360deg);
   }
 }

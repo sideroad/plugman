@@ -18,13 +18,12 @@ class Send extends Component {
     super(props);
     this.state = {
       contents: '',
-      index: props.favorites.length,
-      timer: 0
+      index: props.favorites.length
     };
     this.onChange = this.onChange.bind(this);
     this.onClickFavorite = this.onClickFavorite.bind(this);
     this.onSend = this.onSend.bind(this);
-    this.timer = this.timer.bind(this);
+    this.count = 0;
   }
   componentWillUnmount() {
     this.props.socket.close();
@@ -45,8 +44,10 @@ class Send extends Component {
     }
   }
   onSend() {
-    if (this.state.contents) {
+    if (this.state.contents && this.props.socket.readyState !== DISCONNECTED) {
       this.props.socket.send(this.state.contents);
+      this.props.onSend(this.count);
+      this.count += 1;
     }
   }
   onPrevNextHistory(operation) {
@@ -55,16 +56,6 @@ class Send extends Component {
       index: newIndex,
       contents: this.props.favorites[newIndex] ? this.props.favorites[newIndex].contents : ''
     });
-  }
-  timer() {
-    if (this.state.timer) {
-      setTimeout(() => {
-        if (this.props.socket.readyState !== DISCONNECTED) {
-          this.onSend();
-          this.timer();
-        }
-      }, this.state.timer);
-    }
   }
   render() {
     const isFavorite = this.state.index !== this.props.favorites.length;
@@ -111,20 +102,8 @@ class Send extends Component {
             onClick={this.onSend}
           />
           <Stopwatch
-            onStart={(interval) => {
-              this.setState(
-                {
-                  timer: interval
-                },
-                () => {
-                  this.timer();
-                }
-              );
-            }}
-            onStop={() => {
-              this.setState({
-                timer: 0
-              });
+            onSend={() => {
+              this.onSend();
             }}
           />
         </div>
@@ -137,7 +116,8 @@ Send.propTypes = {
   socket: PropTypes.object.isRequired,
   favorites: PropTypes.array.isRequired,
   onDeleteFavorite: PropTypes.func.isRequired,
-  onSaveFavorite: PropTypes.func.isRequired
+  onSaveFavorite: PropTypes.func.isRequired,
+  onSend: PropTypes.func.isRequired
 };
 
 export default Send;

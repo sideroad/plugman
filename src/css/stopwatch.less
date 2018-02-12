@@ -74,3 +74,26 @@
   cursor: pointer;
   outline: none;
 }
+
+.beating button {
+  animation: push 0.2s ease-out;
+  animation-fill-mode: forwards;
+}
+
+@keyframes push {
+  0% {
+    transform: scale(1);
+  }
+
+  25% {
+    transform: scale(0.8);
+  }
+
+  75% {
+    transform: scale(1.05);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}

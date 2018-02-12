@@ -18,8 +18,11 @@ class Stopwatch extends React.Component {
     this.state = {
       isOpen: false,
       interval: '1000',
-      played: false
+      played: false,
+      timer: 0,
+      beating: false
     };
+    this.timer = this.timer.bind(this);
     this.handleOutsideClick = this.handleOutsideClick.bind(this);
   }
 
@@ -43,6 +46,26 @@ class Stopwatch extends React.Component {
       });
     }
   }
+  timer() {
+    if (this.state.timer) {
+      setTimeout(() => {
+        this.setState(
+          {
+            beating: true
+          },
+          () => {
+            this.props.onSend();
+            this.timer();
+            setTimeout(() => {
+              this.setState({
+                beating: false
+              });
+            }, 200);
+          }
+        );
+      }, this.state.timer);
+    }
+  }
 
   render() {
     return (
@@ -60,7 +83,9 @@ class Stopwatch extends React.Component {
           }}
         >
           <Button
-            className={`${styles.stopwatch.button}`}
+            className={`${styles.stopwatch.button} ${
+              this.state.beating ? styles.stopwatch.beating : null
+            }`}
             icon="fa-heartbeat"
             text=""
             color="primary"
@@ -99,14 +124,11 @@ class Stopwatch extends React.Component {
                 const played = !this.state.played;
                 this.setState(
                   {
-                    played
+                    played,
+                    timer: played ? Number(this.state.interval) : 0
                   },
                   () => {
-                    if (played) {
-                      this.props.onStart(Number(this.state.interval));
-                    } else {
-                      this.props.onStop();
-                    }
+                    this.timer();
                   }
                 );
               }}
@@ -131,8 +153,7 @@ class Stopwatch extends React.Component {
 }
 
 Stopwatch.propTypes = {
-  onStart: PropTypes.func.isRequired,
-  onStop: PropTypes.func.isRequired
+  onSend: PropTypes.func.isRequired
 };
 
 export default Stopwatch;

@@ -10,8 +10,9 @@ class OnMessage extends Component {
     this.state = {
       message: '',
       histories: [],
-      index: 0,
+      index: 0
     };
+    this.count = 0;
   }
   componentDidMount() {
     this.props.socket.onmessage = ({ data }) => {
@@ -21,11 +22,17 @@ class OnMessage extends Component {
       } catch (error) {
         console.log('');
       }
-      this.setState({
-        message,
-        histories: this.state.histories.concat([message]),
-        index: this.state.histories.length,
-      });
+      this.setState(
+        {
+          message,
+          histories: this.state.histories.concat([message]),
+          index: this.state.histories.length
+        },
+        () => {
+          this.props.onMessage(this.count);
+          this.count += 1;
+        }
+      );
     };
   }
   componentWillUnmount() {
@@ -33,17 +40,14 @@ class OnMessage extends Component {
   }
   onPrevNextHistory(operation) {
     this.setState({
-      index: operation === 'prev' ? this.state.index - 1 :
-             this.state.index + 1,
+      index: operation === 'prev' ? this.state.index - 1 : this.state.index + 1
     });
   }
   render() {
     return (
-      <div className={styles.column} >
-        <div className={styles.title}>
-          ws.onmessage
-        </div>
-        <div className={styles.container} >
+      <div className={styles.column}>
+        <div className={styles.title}>ws.onmessage</div>
+        <div className={styles.container}>
           <button
             disabled={this.state.index === 0}
             className={`${styles.bracket} ${styles.left}`}
@@ -51,15 +55,10 @@ class OnMessage extends Component {
           >
             <i className={`${fa.fa} ${fa['fa-play']}`} aria-hidden="true" />
           </button>
-          <pre
-            className={styles.message}
-          >
-            {this.state.histories[this.state.index]}
-          </pre>
+          <pre className={styles.message}>{this.state.histories[this.state.index]}</pre>
           <button
             disabled={
-              !this.state.histories.length ||
-              this.state.index === this.state.histories.length - 1
+              !this.state.histories.length || this.state.index === this.state.histories.length - 1
             }
             className={`${styles.bracket} ${styles.right}`}
             onClick={() => this.onPrevNextHistory('next')}
@@ -73,7 +72,8 @@ class OnMessage extends Component {
 }
 
 OnMessage.propTypes = {
-  socket: PropTypes.object.isRequired
+  socket: PropTypes.object.isRequired,
+  onMessage: PropTypes.func.isRequired
 };
 
 export default OnMessage;
