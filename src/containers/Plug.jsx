@@ -86,6 +86,7 @@ const connected = connect(
     updateKeepalive: (fetcher, keepalive) => {
       fetcher.keepalive
         .update({
+          id: keepalive.keepalive,
           keepalive: keepalive.keepalive,
           enabled: keepalive.enabled,
           message: keepalive.message,
