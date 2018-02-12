@@ -154,7 +154,9 @@ export default function bffFn(app) {
               method: 'PATCH',
               headers,
               body: JSON.stringify({
-                ...req.body,
+                message: req.body.message,
+                enabled: req.body.enabled,
+                interval: req.body.interval,
                 owner: req.user.id
               })
             })
@@ -172,8 +174,7 @@ export default function bffFn(app) {
                       })
                     })
               )
-              .then(fetched => fetched.json())
-              .then(json => res.json(json));
+              .then(() => res.json({}));
           }
         }
       },

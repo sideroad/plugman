@@ -84,7 +84,18 @@ const connected = connect(
   }),
   dispatch => ({
     updateKeepalive: (fetcher, keepalive) => {
-      fetcher.keepalive.update(keepalive);
+      fetcher.keepalive
+        .update({
+          keepalive: keepalive.keepalive,
+          enabled: keepalive.enabled,
+          message: keepalive.message,
+          interval: keepalive.interval
+        })
+        .then(() => {
+          fetcher.keepalive.get({
+            keepalive: keepalive.keepalive
+          });
+        });
     },
     change: (plug) => {
       dispatch(plugActions.change(plug));
