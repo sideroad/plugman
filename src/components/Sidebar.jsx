@@ -10,29 +10,46 @@ import fa from '../css/koiki-ui/fa/less/font-awesome.less';
 export default class Sidebar extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      value: ''
+    };
     autoBind(this);
   }
-  componentDidUpdate() {
-    if (this.props.editing) {
-      this.nameDOM.focus();
-    }
-  }
 
-  handleAdd(event) {
-    event.preventDefault();
+  handleFocus() {
     this.props.onAdd();
   }
 
   handleSubmit(event) {
     event.preventDefault();
-    const name = this.nameDOM.value;
-    this.props.onSave({
-      name
+    const value = this.state.value;
+    this.setState(
+      {
+        value: ''
+      },
+      () => {
+        this.props.onSave({
+          name: value
+        });
+      }
+    );
+  }
+
+  handleChange(event) {
+    this.setState({
+      value: event.target.value
     });
   }
 
   handleBlur() {
-    this.props.onBlur();
+    this.setState(
+      {
+        value: ''
+      },
+      () => {
+        this.props.onBlur();
+      }
+    );
   }
 
   handleClick(event) {
@@ -42,12 +59,7 @@ export default class Sidebar extends Component {
   }
 
   render() {
-    const {
-      plugs,
-      editing,
-      err,
-      selected,
-    } = this.props;
+    const { plugs, editing, err, selected } = this.props;
     const lang = this.props.lang;
 
     return (
@@ -62,38 +74,33 @@ export default class Sidebar extends Component {
                 <i className={`${fa.fa} ${fa['fa-cubes']}`} />Plugs
               </IndexLink>
             </li>
-            {
-              plugs.map(plug =>
-                <li key={plug.id} >
-                  <IndexLink
-                    to={stringify(uris.pages.plug, { lang, plug: plug.id })}
-                    className={`${styles.child} ${plug.id === selected ? styles.active : ''}`}
-                    onClick={this.handleClick}
-                  >
-                    {plug.name}
-                  </IndexLink>
-                </li>
-              )
-            }
-            {editing ?
-              <li>
-                <form onSubmit={this.handleSubmit} >
-                  <input
-                    ref={(elem) => { this.nameDOM = elem; }}
-                    className={`${styles.input} ${err ? styles.err : ''}`}
-                    type="text"
-                    placeholder="Collection name"
-                    onBlur={this.handleBlur}
-                  />
-                </form>
+            {plugs.map(plug => (
+              <li key={plug.id}>
+                <IndexLink
+                  to={stringify(uris.pages.plug, { lang, plug: plug.id })}
+                  className={`${styles.child} ${plug.id === selected ? styles.active : ''}`}
+                  onClick={this.handleClick}
+                >
+                  {plug.name}
+                </IndexLink>
               </li>
-              :
-              <li className={styles.plusContainer}>
-                <button onClick={this.handleAdd} className={styles.plus} >
-                  <i className={`${fa.fa} ${fa['fa-plus']}`} />
-                </button>
-              </li>
-            }
+            ))}
+            <li>
+              <form onSubmit={this.handleSubmit} className={styles.form}>
+                <input
+                  className={`${styles.input} ${err ? styles.err : ''} ${
+                    editing ? styles.focused : styles.blured
+                  }`}
+                  value={this.state.value}
+                  type="text"
+                  placeholder={editing ? 'Plug name' : '+'}
+                  onFocus={this.handleFocus}
+                  onBlur={this.handleBlur}
+                  onChange={this.handleChange}
+                  autoFocus={editing}
+                />
+              </form>
+            </li>
           </ul>
         </div>
       </div>
@@ -110,5 +117,5 @@ Sidebar.propTypes = {
   closeSidebar: PropTypes.func.isRequired,
   editing: PropTypes.bool,
   err: PropTypes.object,
-  lang: PropTypes.string.isRequired,
+  lang: PropTypes.string.isRequired
 };

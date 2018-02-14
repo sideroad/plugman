@@ -1,13 +1,13 @@
 @import "variables.less";
 
-.lead{
+.lead {
   font-size: 1.5em;
   margin-bottom: 0.5em;
   color: @primary;
 }
 
 .header,
-.child{
+.child {
   color: @light-primary;
   transition-duration: 0.2s;
   display: block;
@@ -24,24 +24,25 @@ button.header {
 }
 
 .header:hover,
-.child:hover{
+.child:hover {
   color: @dark-primary;
   background-color: @primary-with-opacity;
 }
 
-.active{
+.active {
   color: @dark-primary;
   background-color: @primary;
 }
 
-.header{
+.header {
   padding: 0.75em 0.5em;
 }
-.child{
+
+.child {
   padding: 0.75em 2.5em;
 }
 
-.header i{
+.header i {
   margin-right: 0.5em;
 }
 
@@ -49,14 +50,13 @@ button.header {
   z-index: 100;
 }
 
-.input{
+.input {
   width: 100%;
   font-size: 1em;
   height: 2em;
   outline: none;
   border: 1px solid @secondary;
   box-sizing: border-box;
-  padding-left: 1em;
 }
 
 .input.err {
@@ -81,11 +81,110 @@ button.header {
   border-radius: 50%;
 }
 
-@media (max-width: @small-max-width){
+.form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 60px;
+}
 
-  .sidebar{
+.blured {
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  background-color: @light-third;
+  text-align: center;
+  animation: blured 0.2s ease-in-out;
+  animation-fill-mode: forwards;
+}
+
+.blured::placeholder {
+  color: @third;
+  font-size: 1.5em;
+}
+
+.focused {
+  border-radius: 16px;
+  border: 2px solid @light-primary;
+  background-color: @third;
+  width: 100%;
+  height: 32px;
+  padding-left: 1em;
+  animation: focused 0.2s ease-in-out;
+  animation-fill-mode: forwards;
+}
+
+@keyframes focused {
+  0% {
+    border-radius: 25px;
+    background-color: @light-primary;
+    width: 10%;
+  }
+
+  10% {
+    height: 20px;
+  }
+
+  60% {
+    width: 100%;
+    height: 20px;
+    transform: scaleX(1.25) scaleY(1);
+  }
+
+  80% {
+    height: 40px;
+    transform: scaleX(1) scaleY(1.25);
+  }
+
+  100% {
+    border-radius: 16px;
+    border: 2px solid @light-primary;
+    background-color: @third;
+    height: 32px;
+    width: 100%;
+    transform: scaleX(1) scaleY(1);
+  }
+}
+
+@keyframes blured {
+  0% {
+    border-radius: 16px;
+    border: 2px solid @light-third;
+    background-color: @third;
+    height: 32px;
+    width: 100%;
+    transform: scaleX(1) scaleY(1);
+  }
+
+  20% {
+    height: 20px;
+    transform: scaleX(1) scaleY(1.25);
+  }
+
+  70% {
+    height: 20px;
+  }
+
+  80% {
+    width: 10%;
+    height: 60px;
+    transform: scaleX(1.25) scaleY(1);
+  }
+
+  100% {
+    border-radius: 25px;
+    background-color: @light-third;
+    width: 50px;
+    height: 50px;
+  }
+}
+
+@media (max-width: @small-max-width) {
+  .sidebar {
     font-size: 1.25em;
   }
+
   .lead {
     text-align: center;
     margin-top: 0.5em;
