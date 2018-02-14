@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'koiki-ui';
+import _ from 'lodash';
 import Stopwatch from './Stopwatch';
 
 const styles = {
@@ -18,12 +19,20 @@ class Send extends Component {
     super(props);
     this.state = {
       contents: '',
+      favorites: props.favorites,
       index: props.favorites.length
     };
     this.onChange = this.onChange.bind(this);
     this.onClickFavorite = this.onClickFavorite.bind(this);
     this.onSend = this.onSend.bind(this);
     this.count = 0;
+  }
+  componentWillReceiveProps(nextProps) {
+    if (_.differenceWith(nextProps.favorites, this.state.favorites, _.isEqual).length) {
+      this.setState({
+        favorites: nextProps.favorites
+      });
+    }
   }
   componentWillUnmount() {
     this.props.socket.close();
@@ -34,13 +43,33 @@ class Send extends Component {
     });
   }
   onClickFavorite() {
-    const favorite = this.props.favorites[this.state.index];
+    const favorites = this.state.favorites.filter((_favorite, index) => index !== this.state.index);
+    const favorite = this.state.favorites[this.state.index];
     if (favorite) {
-      this.props.onDeleteFavorite(favorite);
+      this.setState(
+        {
+          favorites,
+          contents: favorites[this.state.index] ? favorites[this.state.index].contents : ''
+        },
+        () => {
+          this.props.onDeleteFavorite(favorite);
+        }
+      );
     } else {
-      this.props.onSaveFavorite({
-        contents: this.state.contents
-      });
+      this.setState(
+        {
+          favorites: this.state.favorites.concat([
+            {
+              contents: this.state.contents
+            }
+          ])
+        },
+        () => {
+          this.props.onSaveFavorite({
+            contents: this.state.contents
+          });
+        }
+      );
     }
   }
   onSend() {
@@ -54,11 +83,11 @@ class Send extends Component {
     const newIndex = operation === 'prev' ? this.state.index - 1 : this.state.index + 1;
     this.setState({
       index: newIndex,
-      contents: this.props.favorites[newIndex] ? this.props.favorites[newIndex].contents : ''
+      contents: this.state.favorites[newIndex] ? this.state.favorites[newIndex].contents : ''
     });
   }
   render() {
-    const isFavorite = this.state.index !== this.props.favorites.length;
+    const isFavorite = this.state.index !== this.state.favorites.length;
     return (
       <div className={styles.send.column}>
         <div className={styles.send.title}>
@@ -67,6 +96,7 @@ class Send extends Component {
             <i
               className={`
                 ${styles.ui.fa.fa}
+                ${isFavorite ? styles.send.on : styles.send.off}
                 ${isFavorite ? styles.ui.fa['fa-heart'] : styles.ui.fa['fa-heart-o']}
               `}
               aria-hidden="true"
@@ -88,7 +118,7 @@ class Send extends Component {
             onChange={this.onChange}
           />
           <button
-            disabled={this.state.index === this.props.favorites.length}
+            disabled={this.state.index === this.state.favorites.length}
             className={`${styles.send.bracket} ${styles.send.right}`}
             onClick={() => this.onPrevNextHistory('next')}
           >

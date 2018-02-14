@@ -193,7 +193,7 @@ export default function bffFn(app) {
             fetch(
               `${apiBase}${uris.apis.favorites}?owner=${req.user.id}&plug=${
                 req.query.plug
-              }&limit=10000&orderBy=name`,
+              }&limit=10000&orderBy=createdAt`,
               {
                 method: 'GET',
                 headers
