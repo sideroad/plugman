@@ -97,6 +97,7 @@ button.header {
   text-align: center;
   animation: blured 0.2s ease-in-out;
   animation-fill-mode: forwards;
+  cursor: pointer;
 }
 
 .blured::placeholder {
@@ -106,7 +107,7 @@ button.header {
 
 .focused {
   border-radius: 16px;
-  border: 2px solid @light-primary;
+  border: 2px solid @light-third;
   background-color: @third;
   width: 100%;
   height: 32px;
@@ -118,7 +119,7 @@ button.header {
 @keyframes focused {
   0% {
     border-radius: 25px;
-    background-color: @light-primary;
+    background-color: @light-third;
     width: 10%;
   }
 
@@ -139,7 +140,7 @@ button.header {
 
   100% {
     border-radius: 16px;
-    border: 2px solid @light-primary;
+    border: 2px solid @light-third;
     background-color: @third;
     height: 32px;
     width: 100%;
