@@ -7,7 +7,7 @@
 - Display onmessage data, be able to confirm past onmessage after connected.
 
 ## Running plugman
-https://plugman.herokuapp.com
+https://plugman.now.sh
 
 
 # Installation
@@ -18,7 +18,7 @@ You can construct plugman on your local.
 
 | Environment Variables        | Example                          | Default Value | Required | Remark                                                                                      |
 |------------------------------|----------------------------------|---------------|----------|---------------------------------------------------------------------------------------------|
-| GLOBAL_HOST                  | plugman.herokuapp.com              | localhost     |          | Please specify public domain                                                                |
+| GLOBAL_HOST                  | plugman.now.sh              | localhost     |          | Please specify public domain                                                                |
 | GLOBAL_PORT                  | 443                              | 443           |          | Please specify port                                                                         |
 | PLUGMAN_GITHUB_CLIENT_ID | aaaaaaaaaaaaaaaaaa             |               |          | Please specify github client ID. Github OAuth will be disabled if does not specified        |
 | PLUGMAN_GITHUB_CLIENT_SECRET   | bbbbbbbbbbbbbbbbbb |               |          | Please specify github client secret ID. This values required when KOIKI_PLUGMAN_GITHUB_CLIENT_ID has specified |

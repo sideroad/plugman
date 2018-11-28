@@ -25,33 +25,19 @@
     "test": "jest"
   },
   "dependencies": {
-    "async": "^2.0.1",
     "babel-polyfill": "^6.3.14",
-    "body-parser": "^1.14.2",
     "compression": "^1.6.0",
-    "cookie-parser": "^1.4.3",
-    "cors": "^2.7.1",
     "express": "^5.0.0-alpha.1",
-    "express-restful-api": "^14.1.2",
-    "express-session": "^1.14.2",
     "express-ws": "^3.0.0",
-    "history": "1.13.1",
-    "hyphenize": "0.0.2",
-    "isomorphic-fetch": "^2.2.0",
     "koiki": "^6.3.1",
     "koiki-ui": "0.0.77",
     "lodash": "^4.17.5",
-    "moment": "^2.10.6",
-    "mongoose": "^4.3.6",
-    "passport": "^0.3.2",
-    "passport-github2": "^0.1.10",
     "pluralize": "^1.2.1",
     "pretty-error": "^1.2.0",
     "prop-types": "^15.5.8",
     "react": "^15.3.2",
     "react-autobind": "^1.0.6",
     "react-dom": "^15.3.2",
-    "react-dropzone": "^4.2.3",
     "react-fastclick": "^2.1.0",
     "react-helmet": "^3.1.0",
     "react-redux": "^4.0.0",
@@ -61,29 +47,18 @@
     "redux": "^3.0.4",
     "redux-connect": "^3.0.0",
     "redux-form": "^7.1.0",
-    "redux-router": "1.0.0-beta5",
     "serve-favicon": "^2.3.0",
-    "uuid-base62": "^0.1.0",
-    "vis": "^4.16.1",
-    "wildcard": "^1.1.2"
+    "uuid-base62": "^0.1.0"
   },
   "devDependencies": {
-    "babel-core": "^6.26.0",
-    "babel-jest": "^21.2.0",
-    "chai": "^3.3.0",
     "eslint": "^3.6.0",
     "eslint-config-airbnb": "^12.0.0",
     "eslint-plugin-import": "^1.16.0",
     "eslint-plugin-jsx-a11y": "^2.2.2",
     "eslint-plugin-react": "^6.4.1",
-    "jest": "^21.2.1",
-    "mocha": "^2.3.3",
-    "phantomjs": "^1.9.18",
-    "regenerator-runtime": "^0.11.1",
-    "stylelint": "^8.4.0",
-    "stylelint-config-standard": "^18.0.0"
+    "jest": "^21.2.1"
   },
   "engines": {
-    "node": "7.10.1"
+    "node": "10.13.0"
   }
 }
