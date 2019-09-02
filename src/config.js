@@ -30,9 +30,9 @@ module.exports = Object.assign({
     secret: process.env.CHAUS_PLUGMAN_SECRET_ID
   },
   api: {
-    host: 'chaus.now.sh',
+    host: 'chaus.herokuapp.com',
     port: '443',
-    base: 'https://chaus.now.sh',
+    base: 'https://chaus.herokuapp.com',
   },
   github: {
     appId: process.env.KOIKI_PLUGMAN_GITHUB_CLIENT_ID,
@@ -48,7 +48,7 @@ module.exports = Object.assign({
         { name: 'description', content: description },
         { charset: 'utf-8' },
         { property: 'og:site_name', content: title },
-        { property: 'og:image', content: 'https://plugman.now.sh/images/logo.png' },
+        { property: 'og:image', content: 'https://plugman.herokuapp.com/images/logo.png' },
         { property: 'og:locale', content: 'en_US' },
         { property: 'og:title', content: title },
         { property: 'og:description', content: description },
